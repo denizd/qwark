@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/settings_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layoutAnimation="@anim/layout_animation_fall_down">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/cardCornerRadius"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/header_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/general"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:boxStrokeWidth="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no"
+                        app:boxCornerRadiusTopEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusTopStart="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomStart="@dimen/cardCornerRadius">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/dark_mode_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/dark_mode"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/cardCornerRadius"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/header_grades"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/grades"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/show_grade_average_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorText"
+                            android:text="@string/show_grade_average_title"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorHint"
+                            android:textSize="12sp"
+                            android:text="@string/show_grade_average_desc"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintTop_toBottomOf="@+id/show_grade_average_textview"
+                            app:layout_constraintStart_toStartOf="@+id/show_grade_average_textview"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <Switch
+                            android:id="@+id/show_grade_average_switch"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/course_sort_type_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/course_sort_type"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:boxStrokeWidth="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no"
+                        app:boxCornerRadiusTopEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusTopStart="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomStart="@dimen/cardCornerRadius">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/grade_type_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/grade_type_title"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:boxStrokeWidth="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no"
+                        app:boxCornerRadiusTopEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusTopStart="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomStart="@dimen/cardCornerRadius">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/school_year_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/school_year_cap"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/add_year_button"
+                            android:text="@string/add"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            app:cornerRadius="@dimen/cardCornerRadius"
+                            app:strokeColor="@color/colorAccent"
+                            app:strokeWidth="1dp"
+                            app:rippleColor="@color/colorAccent"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/edit_year_button"
+                            android:text="@string/edit"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            app:cornerRadius="@dimen/cardCornerRadius"
+                            app:strokeColor="@color/colorAccent"
+                            app:strokeWidth="1dp"
+                            app:rippleColor="@color/colorAccent"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/delete_year_button"
+                            android:text="@string/delete"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:cornerRadius="@dimen/cardCornerRadius"
+                            app:strokeColor="@color/colorWarning"
+                            android:textColor="@color/colorWarning"
+                            app:strokeWidth="1dp"
+                            app:rippleColor="@color/colorWarning"/>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:id="@+id/copy_courses_button"
+                        android:text="@string/copy_courses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="@dimen/cardCornerRadius"
+                        app:strokeColor="@color/colorAccent"
+                        app:strokeWidth="1dp"
+                        app:rippleColor="@color/colorAccent"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/cardCornerRadius"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/header_participation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/participation"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:boxStrokeWidth="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no"
+                        app:boxCornerRadiusTopEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusTopStart="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomStart="@dimen/cardCornerRadius">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/participation_count_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/participation_display"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:boxStrokeWidth="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no"
+                        app:boxCornerRadiusTopEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusTopStart="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomStart="@dimen/cardCornerRadius">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/participation_day_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/participation_day"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/cardCornerRadius"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/header_finals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/final_grades"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:boxStrokeWidth="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColorHint="@color/colorHint"
+                        android:importantForAutofill="no"
+                        app:boxCornerRadiusTopEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomEnd="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusTopStart="@dimen/cardCornerRadius"
+                        app:boxCornerRadiusBottomStart="@dimen/cardCornerRadius">
+
+                        <com.google.android.material.textview.MaterialAutoCompleteTextView
+                            android:id="@+id/score_profile_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/score_profile"
+                            android:editable="false"
+                            android:textColor="@color/colorText"
+                            android:textSize="14sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/add_score_profile_button"
+                            android:text="@string/add"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            app:cornerRadius="@dimen/cardCornerRadius"
+                            app:strokeColor="@color/colorAccent"
+                            app:strokeWidth="1dp"
+                            app:rippleColor="@color/colorAccent"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/edit_score_profile_button"
+                            android:text="@string/edit"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            app:cornerRadius="@dimen/cardCornerRadius"
+                            app:strokeColor="@color/colorAccent"
+                            app:strokeWidth="1dp"
+                            app:rippleColor="@color/colorAccent"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/delete_score_profile_button"
+                            android:text="@string/delete"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:cornerRadius="@dimen/cardCornerRadius"
+                            app:strokeColor="@color/colorWarning"
+                            android:textColor="@color/colorWarning"
+                            app:strokeWidth="1dp"
+                            app:rippleColor="@color/colorWarning"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <include layout="@layout/powered_by_qwark"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,0 +1,90 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/manrope_medium</item>
+        <item name="android:colorEdgeEffect">@color/colorAccent</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:windowLightStatusBar">@bool/isLight</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">@bool/isLight</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeSmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeMediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeLargeComponent</item>
+        <item name="cardBackgroundColor">@color/colorCardBackground</item>
+        <item name="cornerRadius">@dimen/cardCornerRadius</item>
+        <item name="cardElevation">3dp</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="boxCornerRadiusTopStart">@dimen/cardCornerRadius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/cardCornerRadius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/cardCornerRadius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/cardCornerRadius</item>
+        <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="boxStrokeWidth">1dp</item>
+<!--        <item name="android:statusBarColor">@color/colorAppBarBackground</item>-->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+<!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+    </style>
+
+    <!-- Launch / splash screen -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="NegativeActionTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:text">@string/cancel</item>
+        <item name="android:textColor">@color/colorWarning</item>
+        <item name="rippleColor">@color/colorWarning</item>
+    </style>
+
+    <style name="NegativeActionOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:text">@string/delete</item>
+        <item name="android:textColor">@color/colorWarning</item>
+        <item name="rippleColor">@color/colorWarning</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeColor">@color/colorWarning</item>
+    </style>
+
+    <style name="ShapeSmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cardCornerRadius</item>
+    </style>
+
+
+    <style name="ShapeMediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cardCornerRadius</item>
+    </style>
+
+    <style name="ShapeLargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cardCornerRadius</item>
+    </style>
+
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SelectableItemThemeWarning">
+        <item name="colorControlHighlight">@color/colorWarning</item>
+    </style>
+
+    <style name="SelectableItemBackgroundWarning">
+        <item name="android:theme">@style/SelectableItemThemeWarning</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="dialogCornerRadius">@dimen/cardCornerRadius</item>
+    </style>
+
+</resources>

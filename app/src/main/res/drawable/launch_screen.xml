@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+
+    <item android:drawable="@color/colorBackground"/>
+
+    <!-- the hard-coded size is ugly but it works lol -->
+    <item
+        android:drawable="@drawable/bolt"
+        android:gravity="center"
+        android:width="120dp"
+        android:height="184dp"
+        android:scaleType="centerInside">
+    </item>
+
+</layer-list>

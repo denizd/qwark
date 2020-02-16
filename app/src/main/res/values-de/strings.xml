@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="add">Hinzufügen</string>
+    <string name="field_empty">Feld darf nicht leer gelassen werden</string>
+    <string name="delete">Löschen</string>
+    <string name="confirm_action">Aktion bestätigen</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="done">Fertig</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="finish">Beenden</string>
+    <string name="create">Erstellen</string>
+    <string name="general">Allgemein</string>
+    <string name="alert_create_school_year_title">Erstelle ein Schuljahr</string>
+    <string name="alert_create_school_year_desc">Bevor du Kurse und Abschlussnoten hinzufügst, gehe in die Einstellungen und erstelle ein Schuljahr und ein Abschlussprofil!</string>
+    <string name="to_be_implemented">Wird noch hinzugefügt</string>
+
+    <!-- CourseFragment.kt -->
+    <string name="course">Kurs</string>
+    <string name="courses">Kurse</string>
+    <string name="your_courses">Deine Kurse</string>
+    <string name="current_average">Derzeitiger Durchschnitt: %s</string>
+    <string name="current_total_average">Derzeitiger gesamter Durchschnitt: %s</string>
+    <string name="no_school_year_selected">Kein Schuljahr ausgewählt</string>
+    <string name="no_grades_entered_placeholder">Keine Noten für %s eingetragen</string>
+    <string name="add_course">Kurs hinzufügen</string>
+    <string name="name">Name</string>
+    <string name="advanced">Leistungskurs</string>
+    <string name="pick_icon">Wähle ein Symbol</string>
+    <string name="options_for_course">Optionen für %s</string>
+    <string name="historical_data_for_course">Vorherige Durchschnitte für %s</string>
+    <string name="edit_course">Kurs bearbeiten</string>
+    <string name="view_historical_data">Vorherige Durchschnitte einsehen</string>
+    <string name="delete_course_and_data">Kurs und dazugehörige Daten löschen</string>
+    <string name="delete_course_and_data_confirmation">Bist du dir sicher, dass du %s und alle dazugehörigen Daten löschen möchtest? Dies umfasst alle Noten und ehemaligen Durchschnitte und kann nicht rückgängig gemacht werden!</string>
+    <string name="average_for_year">Ø für %s: %s</string>
+    <string name="average_and_grade_for_year">Ø für %s: %s ≙ %s</string>
+    <string name="average_grade_for_year">Ø für %s: %s</string>
+    <string name="average_grade_placeholder">Ø: Note %s</string>
+    <string name="advanced_abbreviated_placeholder">%s (LK)</string>
+    <plurals name="average_points_placeholder">
+        <item quantity="one">Ø: %s Punkt</item>
+        <item quantity="other">Ø: %s Punkte</item>
+    </plurals>
+    <string name="average_points_no_grade_placeholder">Keine Noten</string>
+    <plurals name="exam_weeks_placeholder">
+        <item quantity="one">; %s Woche bis zur Klausur</item>
+        <item quantity="other">; %s Woche bis zur Klausur</item>
+    </plurals>
+    <plurals name="exam_days_placeholder">
+        <item quantity="one">; %s Tag bis zur Klausur</item>
+        <item quantity="other">; %s Tage bis zur Klausur</item>
+    </plurals>
+    <string name="exam_today_placeholder">; Klausur heute</string>
+    <string name="grade_format_error">Überprüfe Notenart</string>
+
+    <!-- HistoricalAverageBottomSheet.kt -->
+    <string name="averages_for_course">Durschnitte für %s</string>
+
+    <!-- GradeFragment.kt -->
+    <string name="grades">Noten</string>
+    <string name="your_grades">Deine Noten</string>
+    <string name="add_grade">Note hinzufügen</string>
+    <string name="verbal_placeholder">Mündlich</string>
+    <string name="written_placeholder">Schriftlich</string>
+    <string name="exam_on_placeholder">; Klausur an %s</string>
+    <string name="verbal">Mündlich</string>
+    <string name="written">Schriftlich</string>
+    <string name="grade">Note</string>
+    <string name="weighting">Gewichtung</string>
+    <string name="weighting_above_hundred">Gewichtung darf 100% nicht überschreiten</string>
+    <string name="confirm_grade_deletion">Bist du dir sicher, dass du diese Note löschen möchtest?</string>
+    <string name="edit_grade">Note bearbeiten</string>
+    <string name="exam">Klausur</string>
+    <string name="exam_date">Klausurdatum (yyyy-mm-dd)</string>
+    <string name="date_format_issue">Dieses Datum kann nicht verarbeitet werden</string>
+    <string name="exam_past_issue">Vergangene Klausuren müssen benotet werden</string>
+
+    <!-- NotesFragment.kt -->
+    <string name="notes">Notizen</string>
+    <string name="your_notes">Deine Notizen</string>
+    <string name="created_at">Erstellt: %s</string>
+    <string name="add_note">Notiz hinzufügen</string>
+    <string name="content">Inhalt</string>
+    <string name="category">Kategorie</string>
+    <string name="options_for_note">Optionen für Notiz</string>
+    <string name="confirm_note_deletion">Bis du dir sicher, dass du diese Notiz löschen möchtest?</string>
+    <string name="uncategorized_brackets">(nicht kategorisiert)</string>
+    <string name="edit_note">Notiz bearbeiten</string>
+    <string name="view_notes_for_category">Alle Notizen für Kategorie \'%s\' einsehen</string>
+    <string name="delete_note">Notiz löschen</string>
+    <string name="mark_note_done">Notiz als erledigt markieren</string>
+    <string name="mark_note_undone">Notiz als nicht erledigt markieren</string>
+    <string name="note_dismissed">(Erledigt)\n\n%s</string>
+
+    <!-- ParticipationFragment.kt -->
+    <string name="participation">Beteiligung</string>
+    <string name="your_participation">Deine Beteiligung</string>
+    <string name="link_course">Kurs verknüpfen</string>
+    <string name="confirm_remove_participation_link">Bist du dir sicher, dass du die Verknüpfung zu %s am %s entfernen möchtest? Deine Beteiligungen werden beibehalten.</string>
+    <string name="start_class_session">Klassenzimmermods starten</string>
+    <string name="participation_placeholder">Gemeldet: %s, gesprochen: %s</string>
+    <string name="participation_ratio_desc">Gemeldet : Gesprochen</string>
+    <string name="delete_participation_confirmation">Bist du dir sicher, dass du diese Beteiligung löschen möchtest?</string>
+    <string name="class_session">Klassenzimmermodus</string>
+    <string name="long_press_to_cancel">Lange drücken um abzubrechen</string>
+    <string name="long_press_to_finish">Lange drücken um zu beenden</string>
+
+    <string-array name="days">
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+    </string-array>
+
+    <!-- FinalsFragment.kt -->
+    <string name="finals">Abschlussnoten</string>
+    <string name="your_final_score">Deine Abschlussnoten</string>
+    <string name="score_profile_template">Note für %s</string>
+    <string name="no_score_profile_selected">Kein Abschlussprofil ausgewählt</string>
+    <string name="options_for_final_grade">Optionen für %s</string>
+    <string name="final_grade">Abschlussnote</string>
+    <string name="basic_courses">Grundkurse</string>
+    <string name="adv_courses">Leistungskurse</string>
+    <string name="final_exams">Abiturklausuren</string>
+    <string name="edit_final_grade">Abschlussnote bearbeiten</string>
+    <string name="link_final_grade">Kurs verknüpfen</string>
+    <string name="view_linked_course">Verknüpften Kurs aufrufen</string>
+    <string name="clear_final_grade">Abschlussnote löschen</string>
+    <string name="clear_final_grade_desc">Bist du dir sicher, dass du diese %s-Abschlussnote löschen möchtest?</string>
+    <string name="clear_final_grade_error">Note kann nicht gelöscht werden; ist bereits leer</string>
+    <string name="pick_a_year">Wähle ein Schuljahr</string>
+    <string name="pick_a_course">Wähle einen Kurs</string>
+
+    <!-- SettingsFragment.kt -->
+    <string name="settings">Einstellungen</string>
+
+    <string name="course_sort_type">Sortiere Kurse nach</string>
+    <string-array name="course_sort_type_options">
+        <item>Zeit hinzugefügt (aufsteigend)</item>
+        <item>Zeit hinzugefügt (absteigend)</item>
+        <item>Name (aufsteigend)</item>
+        <item>Name (absteigend)</item>
+        <item>LK / GK</item>
+        <item>GK / LK</item>
+        <item>Durchschnitt (aufsteigend)</item>
+        <item>Durchschnitt (absteigend)</item>
+        <item>Nächste Klausur</item>
+    </string-array>
+
+    <string name="dark_mode">App-Design</string>
+    <string-array name="dark_mode_options">
+        <item>Hell</item>
+        <item>Dunkel</item>
+        <item>System folgen</item>
+    </string-array>
+
+    <string name="show_grade_average_title">Gesamtdurchschnitt als Note zeigen</string>
+    <string name="show_grade_average_desc">Wird nur neben Punkteschnitt gezeigt</string>
+    <string name="grade_type_title">Notenart</string>
+    <string-array name="grade_type_array">
+        <item>Punkte (präzise)</item>
+        <item>Punkte (gerundet)</item>
+                <item>Nummerierte Noten (1–6)</item>
+                <item>Buchstabierte Noten (A–F)</item>
+    </string-array>
+
+    <string name="school_year_cap">Schuljahr</string>
+    <string name="add_school_year">Schuljahr hinzufügen</string>
+    <string name="edit_school_year">Schuljahr bearbeiten</string>
+    <string name="copy_courses">Kurse kopieren</string>
+    <string name="copy_courses_success">Kurse erfolgreich kopiert</string>
+    <string name="school_year">Schuljahr</string>
+    <string name="delete_school_year_desc">Bist du dir sicher, dass du das Schuljahr %s löschen möchtest?</string>
+
+    <string name="participation_display">Anzeige der Beteiligungen</string>
+    <string-array name="participation_display_array">
+        <item>Durchschnitt pro Stunde</item>
+        <item>Gesamt</item>
+    </string-array>
+    <string name="participation_day">Ausgewählter Tag</string>
+    <string-array name="participation_day_array">
+        <item>Automatisch</item>
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+    </string-array>
+
+    <string name="final_grades">Abschlussnoten</string>
+    <string name="score_profile">Abschlussprofil</string>
+    <string name="add_score_profile">Abschlussprofil hinzufügen</string>
+    <string name="edit_score_profile">Abschlussprofil bearbeiten</string>
+    <string name="delete_score_profile_desc">Bist du dir sicher, dass du das Abschlussprofil %s löschen möchtest?</string>
+
+    <!-- hidden -->
+    <string name="self_esteem">Du musst an deinem Selbstvertrauen arbeiten :)</string>
+
+</resources>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:textSize="22sp"
+        android:fontFamily="@font/manrope_semibold"
+        android:text="@string/edit_final_grade"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/grade_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:np_min="0"
+        app:np_max="15"
+        app:np_textColor="@color/colorText"
+        app:np_dividerColor="@color/colorAccent"
+        app:np_selectedTextColor="@color/colorAccent"
+        app:np_orientation="horizontal"
+        app:np_wheelItemCount="5"
+        android:layout_marginTop="16dp"/>
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--        app:boxStrokeColor="@color/colorAccent"-->
+<!--        app:boxStrokeWidth="1dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:textColorHint="@color/colorHint"-->
+<!--        android:importantForAutofill="no"-->
+<!--        app:boxCornerRadiusTopEnd="12dp"-->
+<!--        app:boxCornerRadiusBottomEnd="12dp"-->
+<!--        app:boxCornerRadiusTopStart="12dp"-->
+<!--        app:boxCornerRadiusBottomStart="12dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginEnd="24dp">-->
+
+<!--        <AutoCompleteTextView-->
+<!--            android:id="@+id/grade_picker"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:editable="false"-->
+<!--            android:hint="@string/grade"-->
+<!--            android:textColor="@color/colorText"-->
+<!--            android:textSize="14sp"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/colorAccent"
+        app:boxStrokeWidth="1dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/course"
+        android:textColorHint="@color/colorHint"
+        android:importantForAutofill="no"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusBottomStart="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/course_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ems="10"
+            android:inputType="textCapSentences"
+            android:imeOptions="flagNoExtractUi"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/cancel_button"
+            android:textColor="@color/colorWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:text="@string/cancel"
+            app:rippleColor="@color/colorWarning"
+            app:cornerRadius="@dimen/cardCornerRadius"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/confirm_button"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/colorAccent"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="24dp"
+            android:text="@string/confirm"
+            app:cornerRadius="@dimen/cardCornerRadius"
+            app:rippleColor="@color/colorAccent"/>
+
+    </LinearLayout>
+
+</LinearLayout>

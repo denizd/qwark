@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/colorBackground"
+    android:animateLayoutChanges="true">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:textSize="22sp"
+        android:fontFamily="@font/manrope_semibold"
+        android:text="@string/add_grade"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/grade_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:np_min="0"
+        app:np_max="15"
+        app:np_textColor="@color/colorText"
+        app:np_dividerColor="@color/colorAccent"
+        app:np_selectedTextColor="@color/colorAccent"
+        app:np_orientation="horizontal"
+        app:np_wheelItemCount="5"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_marginEnd="4dp"-->
+<!--            android:textColorHint="@color/colorHint"-->
+<!--            android:importantForAutofill="no">-->
+
+<!--            <AutoCompleteTextView-->
+<!--                android:id="@+id/grade_picker"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:editable="false"-->
+<!--                android:hint="@string/grade"-->
+<!--                android:textColor="@color/colorText"-->
+<!--                android:textSize="14sp"/>-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <NumberPicker-->
+<!--            android:id="@+id/grade_picker"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"/>-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:hint="@string/weighting"
+            android:textColorHint="@color/colorHint"
+            android:importantForAutofill="no">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weighting_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:maxLines="1"
+                android:digits="0123456789"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:maxLength="3"
+                android:imeOptions="flagNoExtractUi"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:hint="@string/add_note"
+            android:textColorHint="@color/colorHint"
+            android:importantForAutofill="no">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/note_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:maxLines="3"
+            android:ems="10"
+            android:inputType="textCapSentences"
+            android:imeOptions="flagNoExtractUi"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/verbal_switch_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:textColor="@color/colorText"
+            android:text="@string/verbal"
+            android:textSize="16sp"
+            android:fontFamily="@font/manrope_regular"/>
+
+        <Switch
+            android:id="@+id/verbal_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/colorText"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="8dp"
+        android:gravity="end">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:textColor="@color/colorText"
+            android:text="@string/exam"
+            android:textSize="16sp"
+            android:fontFamily="@font/manrope_regular"/>
+
+        <Switch
+            android:id="@+id/exam_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/colorText"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/exam_text_layout"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/exam_date"
+        android:textColorHint="@color/colorHint"
+        android:importantForAutofill="no">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/exam_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:maxLines="1"
+            android:digits="0123456789-"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:imeOptions="flagNoExtractUi"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/cancel_button"
+            android:textColor="@color/colorWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:text="@string/cancel"
+            app:rippleColor="@color/colorWarning"
+            app:cornerRadius="@dimen/cardCornerRadius"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/create_button"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/colorAccent"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="24dp"
+            android:text="@string/create"
+            app:cornerRadius="@dimen/cardCornerRadius"
+            app:rippleColor="@color/colorAccent"/>
+
+    </LinearLayout>
+
+</LinearLayout>
