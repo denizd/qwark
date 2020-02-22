@@ -5,24 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import com.denizd.qwark.R
-import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.databinding.FinalGradeEditDialogBinding
 import com.denizd.qwark.fragment.FinalsFragment
 import com.denizd.qwark.model.FinalGrade
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class FinalsCreateBottomSheet : BottomSheetDialogFragment() {
+class FinalsCreateSheet : BottomSheetDialogFragment() {
 
     private var _binding: FinalGradeEditDialogBinding? = null
     private val binding: FinalGradeEditDialogBinding get() = _binding!!
     private lateinit var mContext: Context
     private lateinit var finalGrade: FinalGrade
+    private lateinit var finalsFragment: FinalsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        finalGrade = QwarkUtil.getFinalGradeFromBundle(arguments)
+        finalsFragment = targetFragment as FinalsFragment
+        finalGrade = finalsFragment.getFinalGrade(arguments?.getInt("finalGradeId") ?: -1)
     }
 
     override fun onAttach(context: Context) {
@@ -38,20 +38,7 @@ internal class FinalsCreateBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val targetFragment = targetFragment as FinalsFragment
-
         binding.courseEdittext.setText(finalGrade.name)
-
-//        val gradeArray = ArrayAdapter.createFromResource(mContext, R.array.grades_points, R.layout.dropdown_item)
-//        binding.gradePicker.setAdapter(gradeArray)
-//        binding.gradePicker.setText(
-//            if (finalGrade.grade == "-1") {
-//                binding.gradePicker.adapter.getItem(0).toString()
-//            } else {
-//                QwarkUtil.getGradeWithLeadingZero(finalGrade.grade.toInt())
-//            },
-//            false
-//        )
         binding.gradePicker.value = if (finalGrade.grade == "-1") 0 else finalGrade.grade.toInt()
 
         binding.cancelButton.setOnClickListener {
@@ -71,7 +58,7 @@ internal class FinalsCreateBottomSheet : BottomSheetDialogFragment() {
                         finalGradeId = finalGrade.finalGradeId,
                         scoreProfileId = finalGrade.scoreProfileId
                     )
-                    targetFragment.update(newFinalGrade)
+                    finalsFragment.update(newFinalGrade)
                     dismiss()
                 }
             }

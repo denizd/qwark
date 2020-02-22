@@ -10,7 +10,7 @@ import com.denizd.qwark.databinding.ConfirmationDialogBinding
 import com.denizd.qwark.viewmodel.ConfirmDeletionViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ConfirmDeletionBottomSheet() : BottomSheetDialogFragment() {
+class ConfirmDeletionSheet() : BottomSheetDialogFragment() {
 
     constructor(text: String, confirmedAction: () -> Unit) : this() {
         this.text = text

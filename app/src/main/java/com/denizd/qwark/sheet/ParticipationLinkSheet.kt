@@ -12,7 +12,7 @@ import com.denizd.qwark.fragment.ParticipationFragment
 import com.denizd.qwark.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class ParticipationLinkBottomSheet : BottomSheetDialogFragment(), CourseAdapter.CourseClickListener {
+class ParticipationLinkSheet : BottomSheetDialogFragment(), CourseAdapter.CourseClickListener {
 
     private lateinit var finalGrade: FinalGrade
     private lateinit var binding: RecyclerDialogBinding
@@ -58,7 +58,7 @@ internal class ParticipationLinkBottomSheet : BottomSheetDialogFragment(), Cours
                             0
                         )
                     },
-                    this@ParticipationLinkBottomSheet,
+                    this@ParticipationLinkSheet,
                     null
                 )
             layoutManager = LinearLayoutManager(context)

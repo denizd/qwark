@@ -13,7 +13,12 @@ class ParticipationCourseViewModel(app: Application) : QwarkViewModel(app) {
         repo.getAllParticipationsForCourse(courseId)
     }
     fun getParticipationCount(participations: List<Participation>) = repo.getParticipationCount(participations)
-    fun updateParticipation(participation: String, courseId: Int) = doAsync { repo.updateParticipation(participation, courseId) }
+    fun updateParticipation(participation: String, courseId: Int) = doAsync {
+        repo.updateParticipation(participation, courseId)
+    }
+    fun updateParticipation(timesHandRaised: Int, timesSpoken: Int, participationId: Int) = doAsync {
+        repo.updateParticipation(timesHandRaised, timesSpoken, participationId)
+    }
     fun createParticipation(timesHandRaised: Int, timesSpoken: Int, time: Long, courseId: Int) = doAsync {
         repo.insert(timesHandRaised, timesSpoken, time, courseId)
     }

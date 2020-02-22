@@ -12,7 +12,7 @@ import com.denizd.qwark.databinding.IconDialogBinding
 import com.denizd.qwark.model.CourseIcon
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class IconPickerBottomSheet : BottomSheetDialogFragment(),
+class IconPickerSheet : BottomSheetDialogFragment(),
     IconAdapter.IconClickListener {
 
     private var _binding: IconDialogBinding? = null
@@ -39,7 +39,7 @@ class IconPickerBottomSheet : BottomSheetDialogFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val targetFragment = targetFragment as CourseCreateBottomSheet
+        val targetFragment = targetFragment as CourseCreateSheet
         val icons = QwarkUtil.drawablesList
         iconAdapter = IconAdapter(icons, this)
 

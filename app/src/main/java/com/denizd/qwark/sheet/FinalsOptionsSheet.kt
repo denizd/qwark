@@ -12,16 +12,18 @@ import com.denizd.qwark.model.FinalGrade
 import com.denizd.qwark.util.QwarkUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class FinalsOptionsBottomSheet : BottomSheetDialogFragment() {
+class FinalsOptionsSheet : BottomSheetDialogFragment() {
 
     private var _binding: FinalGradeOptionsDialogBinding? = null
     private val binding: FinalGradeOptionsDialogBinding get() = _binding!!
     private lateinit var mContext: Context
     private lateinit var finalGrade: FinalGrade
+    private lateinit var finalsFragment: FinalsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        finalGrade = QwarkUtil.getFinalGradeFromBundle(arguments)
+        finalsFragment = targetFragment as FinalsFragment
+        finalGrade = finalsFragment.getFinalGrade(arguments?.getInt("finalGradeId") ?: -1)
     }
 
     override fun onAttach(context: Context) {
@@ -36,30 +38,28 @@ internal class FinalsOptionsBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        val targetFragment = targetFragment as FinalsFragment
 
         binding.title.text = getString(R.string.options_for_final_grade, if (finalGrade.name.isEmpty()) getString(R.string.final_grade) else finalGrade.name)
 
         if (finalGrade.type == "exam") binding.linkGradeButton.visibility = View.GONE
         if (finalGrade.courseId == -1) binding.viewLinkedCourseButton.visibility = View.GONE
         binding.editGradeButton.setOnClickListener {
-            targetFragment.createEditGradeSheet(finalGrade)
+            finalsFragment.createEditGradeSheet(finalGrade)
             dismiss()
         }
         binding.linkGradeButton.setOnClickListener {
-            targetFragment.createLinkGradeSheet(finalGrade)
+            finalsFragment.createLinkGradeSheet(finalGrade)
             dismiss()
         }
         binding.viewLinkedCourseButton.setOnClickListener {
-            targetFragment.viewLinkedCourse(finalGrade.courseId)
+            finalsFragment.viewLinkedCourse(finalGrade.courseId)
             dismiss()
         }
         binding.clearGradeButton.setOnClickListener {
             if (finalGrade.grade == "-1") {
-                targetFragment.clearFinalGradeError()
+                finalsFragment.clearFinalGradeError()
             } else {
-                targetFragment.clearFinalGrade(finalGrade)
+                finalsFragment.clearFinalGrade(finalGrade)
             }
             dismiss()
         }

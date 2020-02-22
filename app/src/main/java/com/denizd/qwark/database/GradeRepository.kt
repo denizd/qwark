@@ -27,4 +27,5 @@ class GradeRepository(app: Application) {
     }
 
     fun getGradesByForeignKey(courseId: Int): LiveData<List<Grade>> = dao.getGradesByForeignKey(courseId)
+    fun getGrade(gradeId: Int) = dao.getGrade(gradeId)[0]
 }

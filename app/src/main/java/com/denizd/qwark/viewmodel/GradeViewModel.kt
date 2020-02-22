@@ -25,4 +25,5 @@ class GradeViewModel(application: Application) : QwarkViewModel(application) {
     fun delete(gradeId: Int) = doAsync { repo.delete(gradeId) }
 
     fun insert(avg: HistoricalAvg) = doAsync { repo.insert(avg) }
+    fun getGrade(gradeId: Int) = returnBlocking { repo.getGrade(gradeId) }
 }

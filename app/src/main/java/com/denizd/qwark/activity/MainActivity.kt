@@ -1,46 +1,39 @@
 package com.denizd.qwark.activity
 
-import android.Manifest
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.TextView
-import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.denizd.qwark.R
+import com.denizd.qwark.databinding.ActivityMainBinding
 import com.denizd.qwark.fragment.*
-import com.denizd.qwark.fragment.CourseFragment
-import com.denizd.qwark.fragment.ParticipationFragment
 import com.denizd.qwark.viewmodel.MainViewModel
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
-internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : FragmentActivity() {
 
-    private lateinit var toolbarTitle: TextView
-    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var viewModel: MainViewModel
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 42)
+//        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 42)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.applyTheme(window, this)
         viewModel.checkForFirstTimeYearNotice(this)
 
-        val actionBar = findViewById<AppBarLayout>(R.id.app_bar_layout)
-        toolbarTitle = findViewById(R.id.toolbarTxt)
-        bottomNavigationView = findViewById(R.id.bottom_nav)
-
-        findViewById<AppBarLayout>(R.id.app_bar_layout).also { appBarLayout ->
+        binding.appBarLayout.also { appBarLayout ->
             appBarLayout.setOnApplyWindowInsetsListener { _, insets ->
                 (appBarLayout.layoutParams as ViewGroup.MarginLayoutParams)
                     .topMargin = insets.systemWindowInsetTop
@@ -48,6 +41,7 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
 
+        // TODO remove this translucent app bar layout stuff, it's hard to maintain
         window.decorView.systemUiVisibility = if (resources.getBoolean(R.bool.isLight)) {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else {
@@ -59,8 +53,8 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
         window.statusBarColor = Color.TRANSPARENT
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            actionBar.setExpanded(true)
+        binding.bottomNav.setOnNavigationItemSelectedListener { item ->
+            binding.appBarLayout.setExpanded(true)
             loadFragment(viewModel.getFragmentType(item.itemId))
         }
 
@@ -89,9 +83,14 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onResume() {
         super.onResume()
         if (supportFragmentManager.fragments.size == 0) {
-            bottomNavigationView.selectedItemId = R.id.courses
+            binding.bottomNav.selectedItemId = R.id.courses
             loadFragment(viewModel.getFragmentType(R.id.courses))
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun loadFragment(type: String): Boolean {
@@ -101,8 +100,10 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
             return false
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment, type)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment, type)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
 
 //        with (supportFragmentManager) {
 //            beginTransaction()
@@ -118,8 +119,8 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
 //        Log.d("TAG2", "${supportFragmentManager.}") // supportFragmentManager.fragments[0].tag} ${supportFragmentManager.fragments[0].javaClass.simpleName
         when (supportFragmentManager.fragments[0].tag) {
             "GradeFragment", "ParticipationCourseFragment" -> {
-                bottomNavigationView.visibility = View.INVISIBLE
-                findViewById<View>(R.id.view).visibility = View.INVISIBLE
+                binding.bottomNav.visibility = View.INVISIBLE
+                binding.view.visibility = View.INVISIBLE
                 super.onBackPressed()
             }
             "NoteFragment" -> {
@@ -128,8 +129,8 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 }
             }
             else -> {
-                bottomNavigationView.visibility = View.VISIBLE
-                findViewById<View>(R.id.view).visibility = View.VISIBLE
+                binding.bottomNav.visibility = View.VISIBLE
+                binding.view.visibility = View.VISIBLE
                 super.onBackPressed()
             }
         }

@@ -12,6 +12,7 @@ import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.model.Course
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.util.getUserDefinedAverage
+import com.denizd.qwark.util.round
 import com.denizd.qwark.util.roundToInt
 
 class CourseAdapter(private var courses: List<CourseExam>,
@@ -69,14 +70,16 @@ class CourseAdapter(private var courses: List<CourseExam>,
                 else -> context.getString(R.string.average_grade_placeholder, currentItem.average.getUserDefinedAverage(gradeType))
             }
         }
-        var timeLeft = ((currentItem.examTime.toDouble() - QwarkUtil.timeAtMidnight.toDouble()) / (1000.0 * 60.0 * 60.0 * 24.0)).roundToInt()
-        val examText = when (timeLeft) {
+        val examText = when (val timeLeft = ((currentItem.examTime.toDouble() - QwarkUtil.timeAtMidnight.toDouble()) / (1000.0 * 60.0 * 60.0 * 24.0)).roundToInt()) {
             0 -> context.getString(R.string.exam_today_placeholder)
             else -> {
                 when {
                     timeLeft > 7 -> {
-                        timeLeft /= 7
-                        context.resources.getQuantityString(R.plurals.exam_weeks_placeholder, timeLeft, timeLeft.toString())
+                        context.resources.getQuantityString(
+                            R.plurals.exam_weeks_placeholder,
+                            2,
+                            (timeLeft.toDouble() / 7.0).round(1).toString()
+                        )
                     }
                     timeLeft in 1..7 -> context.resources.getQuantityString(R.plurals.exam_days_placeholder, timeLeft, timeLeft.toString())
                     else -> ""

@@ -76,6 +76,7 @@
     <string name="exam_date">Klausurdatum (yyyy-mm-dd)</string>
     <string name="date_format_issue">Dieses Datum kann nicht verarbeitet werden</string>
     <string name="exam_past_issue">Vergangene Klausuren müssen benotet werden</string>
+    <string name="open_participation_fragment">Beteiligung einsehen</string>
 
     <!-- NotesFragment.kt -->
     <string name="notes">Notizen</string>
@@ -104,8 +105,12 @@
     <string name="participation_ratio_desc">Gemeldet : Gesprochen</string>
     <string name="delete_participation_confirmation">Bist du dir sicher, dass du diese Beteiligung löschen möchtest?</string>
     <string name="class_session">Klassenzimmermodus</string>
+    <string name="class_session_resumed">Klassenzimmermodus (fortgesetzt)</string>
     <string name="long_press_to_cancel">Lange drücken um abzubrechen</string>
     <string name="long_press_to_finish">Lange drücken um zu beenden</string>
+    <string name="open_grade_fragment">Kurs einsehen</string>
+    <string name="participation_too_old">Beteiligung zu alt, um fortgesetzt zu werden</string>
+    <string name="participation_resumable">" (fortsetzbar)"</string>
 
     <string-array name="days">
         <item>Montag</item>

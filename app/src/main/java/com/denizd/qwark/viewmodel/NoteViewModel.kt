@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class NoteViewModel(application: Application) : AndroidViewModel(application) {
+class NoteViewModel(application: Application) : QwarkViewModel(application) {
 
     private val repo = NoteRepository(application)
     private val reloadTrigger = MutableLiveData<String>()
@@ -75,4 +75,6 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
             repo.getAllCategories()
         }
     }
+
+    fun getNote(noteId: Int) = returnBlocking { repo.getNote(noteId) }
 }

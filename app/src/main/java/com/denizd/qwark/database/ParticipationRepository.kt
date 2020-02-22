@@ -3,14 +3,12 @@ package com.denizd.qwark.database
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.denizd.qwark.util.QwarkPreferences
 import com.denizd.qwark.model.Course
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.model.Participation
 import com.denizd.qwark.model.SchoolDay
-import com.denizd.qwark.util.QwarkUtil
-import com.denizd.qwark.util.round
-import com.denizd.qwark.util.roundToInt
+import com.denizd.qwark.util.*
+import com.denizd.qwark.util.QwarkPreferences
 import java.util.*
 
 class ParticipationRepository(app: Application) {
@@ -46,8 +44,7 @@ class ParticipationRepository(app: Application) {
 
     fun getDayType(): String = if (dayId in 1..5) days[dayId - 1] else days[1]
     fun getDays(): List<SchoolDay> = dao.getDays(prefs.getSchoolYear())
-    fun getCourses(): List<CourseExam> = QwarkUtil.getCoursesSorted(
-        dao.getCoursesByYearIdAsList(prefs.getSchoolYear()),
+    fun getCourses(): List<CourseExam> = dao.getCoursesByYearIdAsList(prefs.getSchoolYear()).getSorted(
         prefs.getCourseSortType()
     )
     fun link(courseId: Int) { dao.link(courseId, getDayType(), prefs.getSchoolYear()) }
@@ -67,6 +64,11 @@ class ParticipationRepository(app: Application) {
         )
     }
     fun delete(participation: Participation) { dao.delete(participation) }
-    fun updateParticipation(participation: String, courseId: Int) { dao.updateParticipation(participation, courseId) }
+    fun updateParticipation(participation: String, courseId: Int) {
+        dao.updateParticipation(participation, courseId)
+    }
+    fun updateParticipation(timesHandRaised: Int, timesSpoken: Int, participationId: Int) {
+        dao.updateParticipation(timesHandRaised, timesSpoken, participationId)
+    }
     fun getSchoolYearName() = prefs.getSchoolYearName()
 }

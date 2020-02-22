@@ -47,6 +47,9 @@ interface QwarkDao {
     @Query("UPDATE course SET participation = :participation WHERE course_id = :courseId")
     fun updateParticipation(participation: String, courseId: Int)
 
+    @Query("UPDATE participation SET times_hand_raised = :timesHandRaised, times_spoken = :timesSpoken WHERE participation_id = :participationId")
+    fun updateParticipation(timesHandRaised: Int, timesSpoken: Int, participationId: Int)
+
 
     // grades
     @get:Query("SELECT * FROM grade ORDER BY time")
@@ -63,6 +66,9 @@ interface QwarkDao {
 
     @Query("DELETE FROM grade WHERE grade_id = :gradeId")
     fun deleteGrade(gradeId: Int)
+
+    @Query("SELECT * FROM grade WHERE grade_id = :gradeId")
+    fun getGrade(gradeId: Int): List<Grade>
 
 
     // notes
@@ -89,6 +95,9 @@ interface QwarkDao {
 
     @Query("SELECT DISTINCT category FROM note")
     fun getAllCategories(): List<String>
+
+    @Query("SELECT * FROM note WHERE note_id = :noteId")
+    fun getNote(noteId: Int): List<Note>
 
 
     // historical averages
@@ -155,6 +164,9 @@ interface QwarkDao {
     @Insert
     fun insertAll(finalGrades: Array<FinalGrade>)
 
+    @Query("SELECT * FROM final_grade WHERE final_grade_id = :finalGradeId")
+    fun getFinalGrade(finalGradeId: Int): List<FinalGrade>
+
 
     // school days
     @Insert
@@ -174,7 +186,7 @@ interface QwarkDao {
     @Query("DELETE FROM course_schoolday_relation WHERE relation_id = :relationId")
     fun removeLink(relationId: Int)
 
-    @Query("SELECT * FROM participation WHERE course_id = :courseId")
+    @Query("SELECT * FROM participation WHERE course_id = :courseId ORDER BY time DESC")
     fun getAllParticipationsForCourse(courseId: Int): LiveData<List<Participation>>
 
     @Insert

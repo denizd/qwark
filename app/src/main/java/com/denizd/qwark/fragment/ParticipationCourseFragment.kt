@@ -14,9 +14,10 @@ import com.denizd.qwark.adapter.ParticipationAdapter
 import com.denizd.qwark.databinding.GradeFragmentBinding
 import com.denizd.qwark.model.Participation
 import com.denizd.qwark.sheet.ClassSessionSheet
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
 import com.denizd.qwark.viewmodel.ParticipationCourseViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 
 class ParticipationCourseFragment : QwarkFragment(), ParticipationAdapter.ParticipationClickListener {
 
@@ -109,11 +110,24 @@ class ParticipationCourseFragment : QwarkFragment(), ParticipationAdapter.Partic
     }
 
     override fun onParticipationClick(participation: Participation) {
-        // do nothing
+        if (participation.time > System.currentTimeMillis() - 1000 * 60 * 90) {
+            openBottomSheet(ClassSessionSheet().also { sheet ->
+                sheet.arguments = Bundle(2).apply {
+                    putInt("timesHandRaised", participation.timesHandRaised)
+                    putInt("timesSpoken", participation.timesSpoken)
+                    putInt("participationId", participation.participationId)
+                }
+                sheet.isCancelable = false
+            })
+        } else {
+            Snackbar
+                .make(snackBarContainer, getString(R.string.participation_too_old), Snackbar.LENGTH_LONG)
+                .show()
+        }
     }
 
     override fun onParticipationLongClick(participation: Participation) {
-        openBottomSheet(ConfirmDeletionBottomSheet(
+        openBottomSheet(ConfirmDeletionSheet(
             getString(R.string.delete_participation_confirmation)
         ) {
             viewModel.delete(participation)
@@ -122,19 +136,30 @@ class ParticipationCourseFragment : QwarkFragment(), ParticipationAdapter.Partic
 
     private fun openGradeFragment() {
         appBar.setExpanded(true)
-        val f = GradeFragment()
-        f.arguments = Bundle().apply {
-            putString("schoolYear", viewModel.getSchoolYearName())
-            putInt("courseId", courseId)
+        (context as FragmentActivity).supportFragmentManager.also { fm ->
+            if (fm.getBackStackEntryAt(0).name == "GradeFragment") {
+                fm.popBackStack()
+            } else {
+                val f = GradeFragment()
+                f.arguments = Bundle().apply {
+                    putString("schoolYear", viewModel.getSchoolYearName())
+                    putInt("courseId", courseId)
+                }
+                fm.beginTransaction()
+                    .replace(R.id.fragment_container, f)
+                    .addToBackStack("GradeFragment")
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+            }
         }
-        (context as FragmentActivity).supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, f)
-            .addToBackStack("GradeFragment")
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
     }
 
     fun createParticipation(timesHandRaised: Int, timesSpoken: Int, time: Long) {
         viewModel.createParticipation(timesHandRaised, timesSpoken, time, courseId)
+    }
+
+    // TODO this function has the same name as another one with a different function signature
+    fun updateParticipation(timesHandRaised: Int, timesSpoken: Int, participationId: Int) {
+        viewModel.updateParticipation(timesHandRaised, timesSpoken, participationId)
     }
 }

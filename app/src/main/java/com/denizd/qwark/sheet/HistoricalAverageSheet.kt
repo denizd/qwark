@@ -12,7 +12,7 @@ import com.denizd.qwark.databinding.RecyclerDialogBinding
 import com.denizd.qwark.fragment.CourseFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class HistoricalAverageBottomSheet : BottomSheetDialogFragment() {
+class HistoricalAverageSheet : BottomSheetDialogFragment() {
 
     private var _binding: RecyclerDialogBinding? = null
     private val binding: RecyclerDialogBinding get() = _binding!!

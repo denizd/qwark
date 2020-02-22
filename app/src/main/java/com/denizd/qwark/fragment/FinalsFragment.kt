@@ -3,27 +3,26 @@ package com.denizd.qwark.fragment
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.FinalGradeAdapter
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
-import com.denizd.qwark.sheet.FinalsCreateBottomSheet
-import com.denizd.qwark.sheet.FinalsOptionsBottomSheet
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
+import com.denizd.qwark.sheet.FinalsCreateSheet
+import com.denizd.qwark.sheet.FinalsOptionsSheet
 import com.denizd.qwark.databinding.FinalsFragmentBinding
-import com.denizd.qwark.sheet.FinalsLinkBottomSheet
-import com.denizd.qwark.util.QwarkUtil
+import com.denizd.qwark.sheet.FinalsLinkSheet
 import com.denizd.qwark.model.FinalGrade
 import com.denizd.qwark.viewmodel.FinalsViewModel
 import com.google.android.material.snackbar.Snackbar
 
-internal class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListener {
+class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListener {
 
     private lateinit var viewModel: FinalsViewModel
     private var _binding: FinalsFragmentBinding? = null
@@ -44,7 +43,7 @@ internal class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeCli
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[FinalsViewModel::class.java]
         viewModel.updateLinkedGrades {
-            viewModel.allFinalGrades?.observe(this, Observer { finalGrades ->
+            viewModel.allFinalGrades.observe(this, Observer { finalGrades ->
                 //            createOverview(finalGrades, view.rootView) // TODO export to bitmap
                 if (basicScrollPosition == null) {
                     binding.basicCoursesRecyclerview.scheduleLayoutAnimation()
@@ -67,7 +66,7 @@ internal class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeCli
                     binding.gradeTextview.text = "---"
                 } else {
                     pointsText = "$finalScore"
-                    gradeText = getString(R.string.approximate_placeholder, viewModel.getFinalGrade(finalScore).toString())
+                    gradeText = getString(R.string.approximate_placeholder, viewModel.getFinalGradeScore(finalScore).toString())
                     setTextForGradeTextViews()
                 }
 
@@ -126,41 +125,42 @@ internal class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeCli
     }
 
     override fun onFinalGradeClick(finalGrade: FinalGrade) {
-        openBottomSheet(FinalsOptionsBottomSheet().also { sheet ->
-            QwarkUtil.putFinalGradeInBundle(sheet, finalGrade)
+        openBottomSheet(FinalsOptionsSheet().also { sheet ->
+            sheet.arguments = Bundle().apply { putInt("finalGradeId", finalGrade.finalGradeId) }
         })
     }
 
-    internal fun createEditGradeSheet(finalGrade: FinalGrade) {
-        openBottomSheet(FinalsCreateBottomSheet().also { sheet ->
-            QwarkUtil.putFinalGradeInBundle(sheet, finalGrade)
+    fun createEditGradeSheet(finalGrade: FinalGrade) {
+        openBottomSheet(FinalsCreateSheet().also { sheet ->
+            sheet.arguments = Bundle().apply { putInt("finalGradeId", finalGrade.finalGradeId) }
         })
     }
 
-    internal fun createLinkGradeSheet(finalGrade: FinalGrade) {
-        openBottomSheet(FinalsLinkBottomSheet().also { sheet ->
-            QwarkUtil.putFinalGradeInBundle(sheet, finalGrade)
+    fun createLinkGradeSheet(finalGrade: FinalGrade) {
+        openBottomSheet(FinalsLinkSheet().also { sheet ->
+            sheet.arguments = Bundle().apply { putInt("finalGradeId", finalGrade.finalGradeId) }
         })
     }
 
-    internal fun getAllYears() = viewModel.getAllYears()
-    internal fun getAllCourses() = viewModel.getAllCourses()
+    fun getAllYears() = viewModel.getAllYears()
+    fun getAllCourses() = viewModel.getAllCourses()
 
-    internal fun viewLinkedCourse(courseId: Int) {
-        val f = GradeFragment()
-        QwarkUtil.putCourseInBundle(f, viewModel.getCourse(courseId))
-        val d = viewModel.getSchoolYearName(courseId)
-        Log.d("TAG", d)
-        f.arguments?.putString("schoolYear", d)
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, f)
-            ?.addToBackStack("GradeFragment")
-            ?.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            ?.commit()
+    fun viewLinkedCourse(courseId: Int) {
+        val f = GradeFragment().also { fragment ->
+            fragment.arguments = Bundle().apply {
+                putInt("courseId", courseId)
+                putString("schoolYear", viewModel.getSchoolYearName(courseId))
+            }
+        }
+        (context as FragmentActivity).supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, f)
+            .addToBackStack(f.name)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
     }
 
-    internal fun clearFinalGrade(finalGrade: FinalGrade) {
-        val deletionSheet = ConfirmDeletionBottomSheet(getString(R.string.clear_final_grade_desc, finalGrade.name)) {
+    fun clearFinalGrade(finalGrade: FinalGrade) {
+        val deletionSheet = ConfirmDeletionSheet(getString(R.string.clear_final_grade_desc, finalGrade.name)) {
             val newFinalGrade = FinalGrade(
                 name = "",
                 grade = "-1",
@@ -175,14 +175,14 @@ internal class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeCli
         openBottomSheet(deletionSheet)
     }
 
-    internal fun clearFinalGradeError() {
+    fun clearFinalGradeError() {
         Snackbar
             .make(snackBarContainer, getString(R.string.clear_final_grade_error), Snackbar.LENGTH_LONG)
             .setBackgroundTint(context.getColor(R.color.colorWarning))
             .show()
     }
 
-    internal fun update(finalGrade: FinalGrade) { viewModel.update(finalGrade) }
+    fun update(finalGrade: FinalGrade) { viewModel.update(finalGrade) }
 
     // TODO perhaps replace with a bottom sheet
 //    private fun createOverview(finalGrades: List<FinalGrade>, view: View) {
@@ -284,6 +284,7 @@ internal class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeCli
         binding.finalExamsRecyclerview.layoutManager?.onRestoreInstanceState(examScrollPosition)
     }
 
-    internal fun getCourseSortType() = viewModel.getCourseSortType()
+    fun getCourseSortType() = viewModel.getCourseSortType()
     fun getGradeType() = viewModel.getGradeType()
+    fun getFinalGrade(finalGradeId: Int) = viewModel.getFinalGrade(finalGradeId)
 }

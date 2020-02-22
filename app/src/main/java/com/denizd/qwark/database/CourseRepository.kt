@@ -21,4 +21,6 @@ internal class CourseRepository(app: Application) {
 
     fun getCoursesByYearId(yearId: Int): LiveData<List<CourseExam>> = dao.getCoursesByYearId(yearId)
     fun getAveragesForCourses(courseId: Int): List<HistoricalAvg> = dao.getAveragesForCourses(courseId)
+
+    fun getCourse(courseId: Int): CourseExam = dao.getCourse(courseId)[0]
 }

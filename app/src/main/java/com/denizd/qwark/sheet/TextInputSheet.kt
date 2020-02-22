@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.denizd.qwark.databinding.TextInputSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal open class TextInputBottomSheet : BottomSheetDialogFragment() {
+open class TextInputSheet : BottomSheetDialogFragment() {
 
     protected var _binding: TextInputSheetBinding? = null
     protected val binding: TextInputSheetBinding get() = _binding!!

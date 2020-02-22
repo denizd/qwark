@@ -8,21 +8,20 @@ import android.view.ViewGroup
 import com.denizd.qwark.R
 import com.denizd.qwark.databinding.CourseOptionsDialogBinding
 import com.denizd.qwark.fragment.CourseFragment
-import com.denizd.qwark.model.Course
 import com.denizd.qwark.model.CourseExam
-import com.denizd.qwark.util.QwarkUtil
+import com.denizd.qwark.util.asCourse
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class CourseOptionsBottomSheet : BottomSheetDialogFragment() {
+class CourseOptionsSheet : BottomSheetDialogFragment() {
 
     private var _binding: CourseOptionsDialogBinding? = null
     private val binding: CourseOptionsDialogBinding get() = _binding!!
     private lateinit var mContext: Context
-    private lateinit var course: CourseExam
+    private lateinit var courseExam: CourseExam
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        course = QwarkUtil.getCourseFromBundle(arguments)
+        courseExam = (targetFragment as CourseFragment).getCourse(arguments?.getInt("courseId") ?: -1)
     }
 
     override fun onAttach(context: Context) {
@@ -40,18 +39,18 @@ internal class CourseOptionsBottomSheet : BottomSheetDialogFragment() {
 
         val targetFragment = targetFragment as CourseFragment
 
-        binding.title.text = getString(R.string.options_for_course, course.name)
+        binding.title.text = getString(R.string.options_for_course, courseExam.name)
 
         binding.viewHistoryButton.setOnClickListener {
-            targetFragment.createHistoryDialog(course.courseId, course.name)
+            targetFragment.createHistoryDialog(courseExam.courseId, courseExam.name)
             dismiss()
         }
         binding.editCourseButton.setOnClickListener {
-            targetFragment.createCourseDialog(course)
+            targetFragment.createCourseDialog(courseExam)
             dismiss()
         }
         binding.deleteCourseButton.setOnClickListener {
-            targetFragment.deleteCourse(QwarkUtil.getCourseExamAsCourse(course))
+            targetFragment.deleteCourse(courseExam.asCourse())
             dismiss()
         }
     }

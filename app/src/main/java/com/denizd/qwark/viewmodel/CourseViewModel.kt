@@ -29,4 +29,5 @@ class CourseViewModel(application: Application) : QwarkViewModel(application) {
     fun insert(course: Course) = doAsync { repo.insert(course) }
     fun update(course: Course)  = doAsync { repo.update(course) }
     fun delete(course: Course) = doAsync { repo.delete(course) }
+    fun getCourse(courseId: Int): CourseExam = returnBlocking { repo.getCourse(courseId) }
 }

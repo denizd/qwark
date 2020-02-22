@@ -53,7 +53,16 @@ class ParticipationAdapter(private var participations: List<Participation>, priv
                 }
             }
         ))
-        holder.time.text = QwarkUtil.getSimpleDateTimeFormat().format(Date(currentItem.time))
+        holder.time.text = buildString {
+            append(QwarkUtil.getSimpleDateTimeFormat().format(Date(currentItem.time)))
+
+            // TODO this checks the time on fragment launch, but it doesn't change, even if the time has passed
+            append(if (currentItem.time > System.currentTimeMillis() - 1000 * 60 * 90) {
+                holder.time.context.getString(R.string.participation_resumable)
+            } else {
+                ""
+            })
+        }
         holder.participationText.text = holder.participationText.context.getString(
             R.string.participation_placeholder,
             currentItem.timesHandRaised.toString(),

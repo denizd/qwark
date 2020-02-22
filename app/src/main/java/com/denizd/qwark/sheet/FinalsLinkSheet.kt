@@ -8,28 +8,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.CourseAdapter
 import com.denizd.qwark.adapter.YearAdapter
-import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.databinding.RecyclerDialogBinding
 import com.denizd.qwark.fragment.FinalsFragment
-import com.denizd.qwark.model.Course
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.model.FinalGrade
 import com.denizd.qwark.model.SchoolYear
+import com.denizd.qwark.util.getSorted
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-internal class FinalsLinkBottomSheet : BottomSheetDialogFragment(), YearAdapter.YearClickListener, CourseAdapter.CourseClickListener {
+class FinalsLinkSheet : BottomSheetDialogFragment(), YearAdapter.YearClickListener, CourseAdapter.CourseClickListener {
 
     private lateinit var finalGrade: FinalGrade
     private lateinit var binding: RecyclerDialogBinding
     private var advanced = false
     private var isSelectingCourse = false
-    private lateinit var finalsTargetFragment: FinalsFragment
+    private lateinit var finalsFragment: FinalsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        finalGrade = QwarkUtil.getFinalGradeFromBundle(arguments)
+        finalsFragment = targetFragment as FinalsFragment
+        finalGrade = finalsFragment.getFinalGrade(arguments?.getInt("finalGradeId") ?: -1)
         advanced = finalGrade.type == "adv"
     }
 
@@ -41,7 +41,7 @@ internal class FinalsLinkBottomSheet : BottomSheetDialogFragment(), YearAdapter.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        finalsTargetFragment = targetFragment as FinalsFragment
+        finalsFragment = targetFragment as FinalsFragment
         fillWithYears()
     }
 
@@ -59,7 +59,7 @@ internal class FinalsLinkBottomSheet : BottomSheetDialogFragment(), YearAdapter.
             finalGradeId = finalGrade.finalGradeId,
             scoreProfileId = finalGrade.scoreProfileId
         )
-        finalsTargetFragment.update(newFinalGrade)
+        finalsFragment.update(newFinalGrade)
         dismiss()
     }
 
@@ -69,7 +69,7 @@ internal class FinalsLinkBottomSheet : BottomSheetDialogFragment(), YearAdapter.
         binding.title.text = getString(R.string.pick_a_year)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = YearAdapter(finalsTargetFragment.getAllYears(), this@FinalsLinkBottomSheet)
+            adapter = YearAdapter(finalsFragment.getAllYears(), this@FinalsLinkSheet)
             scheduleLayoutAnimation()
         }
         isSelectingCourse = false
@@ -77,14 +77,14 @@ internal class FinalsLinkBottomSheet : BottomSheetDialogFragment(), YearAdapter.
 
     private fun fillWithCourses(schoolYear: SchoolYear) {
         binding.title.text = getString(R.string.pick_a_course)
-        binding.recyclerView.adapter =
-            CourseAdapter(
-                QwarkUtil.getCoursesSorted(
-                    finalsTargetFragment.getAllCourses().filter { c -> c.yearId == schoolYear.yearId && c.advanced == advanced },
-                    finalsTargetFragment.getCourseSortType()
-                ),
-                this,
-                finalsTargetFragment.getGradeType()
+        binding.recyclerView.adapter = CourseAdapter(
+            finalsFragment.getAllCourses().filter { c ->
+                c.yearId == schoolYear.yearId && c.advanced == advanced
+            }.getSorted(
+                finalsFragment.getCourseSortType()
+            ),
+            this,
+            finalsFragment.getGradeType()
         )
         binding.recyclerView.scheduleLayoutAnimation()
         isSelectingCourse = true

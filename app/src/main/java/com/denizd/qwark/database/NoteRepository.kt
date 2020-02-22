@@ -16,4 +16,5 @@ class NoteRepository(app: Application) {
     fun update(note: Note) { dao.update(note) }
     fun updateDismissed(newDismissedStatus: Boolean, noteId: Int) { dao.updateDismissed(newDismissedStatus, noteId) }
     fun delete(noteId: Int) { dao.deleteNote(noteId) }
+    fun getNote(noteId: Int) = dao.getNote(noteId)[0]
 }

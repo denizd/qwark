@@ -11,14 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.NoteAdapter
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
-import com.denizd.qwark.sheet.NoteCreateBottomSheet
-import com.denizd.qwark.sheet.NoteDisplayBottomSheet
-import com.denizd.qwark.sheet.NoteOptionsBottomSheet
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
+import com.denizd.qwark.sheet.NoteCreateSheet
+import com.denizd.qwark.sheet.NoteDisplaySheet
+import com.denizd.qwark.sheet.NoteOptionsSheet
 import com.denizd.qwark.util.OnBackPressed
 import com.denizd.qwark.databinding.*
 import com.denizd.qwark.model.Note
-import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.viewmodel.NoteViewModel
 import com.google.android.material.appbar.AppBarLayout
 
@@ -82,7 +81,7 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
 
     override fun onResume() {
         super.onResume()
-        binding.recyclerView.applyPadding(verticalPadding = 4)
+        binding.recyclerView.applyPadding(horizontalPadding = 4)
     }
 
     override fun onDestroy() {
@@ -113,8 +112,8 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
     }
 
     override fun onNoteClick(note: Note) {
-        openBottomSheet(NoteDisplayBottomSheet().also { sheet ->
-            QwarkUtil.putNoteInBundle(sheet, note)
+        openBottomSheet(NoteDisplaySheet().also { sheet ->
+            sheet.arguments = Bundle().apply { putInt("noteId", note.noteId) }
         })
     }
 
@@ -124,7 +123,7 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
     }
 
     fun deleteNote(noteId: Int) {
-        val deletionSheet = ConfirmDeletionBottomSheet(getString(R.string.confirm_note_deletion)) {
+        val deletionSheet = ConfirmDeletionSheet(getString(R.string.confirm_note_deletion)) {
             scrollPosition = binding.recyclerView.layoutManager?.onSaveInstanceState()
             viewModel.delete(noteId)
             binding.recyclerView.scheduleLayoutAnimation()
@@ -141,14 +140,14 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
     }
 
     private fun createOptionsSheet(note: Note) {
-        openBottomSheet(NoteOptionsBottomSheet().also { sheet ->
-            QwarkUtil.putNoteInBundle(sheet, note)
+        openBottomSheet(NoteOptionsSheet().also { sheet ->
+            sheet.arguments = Bundle().apply { putInt("noteId", note.noteId) }
         })
     }
 
     fun createNoteDialog(note: Note? = null) {
-        val createSheet = NoteCreateBottomSheet().also { sheet ->
-            if (note != null) QwarkUtil.putNoteInBundle(sheet, note)
+        val createSheet = NoteCreateSheet().also { sheet ->
+            if (note != null) sheet.arguments = Bundle().apply { putInt("noteId", note.noteId) }
         }
         openBottomSheet(createSheet)
     }
@@ -165,4 +164,5 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
     fun insert(note: Note) { viewModel.insert(note) }
     fun update(note: Note) { viewModel.update(note) }
     fun getAllCategories(): List<String> = viewModel.getAllCategories()
+    fun getNote(noteId: Int) = viewModel.getNote(noteId)
 }

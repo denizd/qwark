@@ -5,10 +5,10 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import com.denizd.qwark.R
 import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.databinding.GradeCreateDialogBinding
@@ -18,18 +18,24 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.ParseException
 import java.util.*
 
-class GradeCreateBottomSheet : BottomSheetDialogFragment() {
+class GradeCreateSheet : BottomSheetDialogFragment() {
 
     private var _binding: GradeCreateDialogBinding? = null
     private val binding: GradeCreateDialogBinding get() = _binding!!
     private lateinit var mContext: Context
     private lateinit var grade: Grade
     private var courseId: Int = 0
+    private lateinit var gradeFragment: GradeFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments?.size() ?: 0 > 1) grade = QwarkUtil.getGradeFromBundle(arguments)
-        courseId = arguments?.getInt("courseId") ?: 0
+        gradeFragment = targetFragment as GradeFragment
+        val gradeId = arguments?.getInt("gradeId") ?: -1
+        if (gradeId == 0) { // 0 signifies no value has been set
+            courseId = arguments?.getInt("courseId") ?: -1
+        } else {
+            grade = gradeFragment.getGrade(gradeId)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -47,10 +53,8 @@ class GradeCreateBottomSheet : BottomSheetDialogFragment() {
 
         LayoutTransition().apply {
             setAnimateParentHierarchy(false)
-            (binding.root as LinearLayout).layoutTransition = this
+            binding.root.layoutTransition = this
         }
-
-        val targetFragment = targetFragment as GradeFragment
 
 //        initGradeDropdown()
 
@@ -79,7 +83,7 @@ class GradeCreateBottomSheet : BottomSheetDialogFragment() {
             }
         }
 
-        binding.gradePicker.displayedValues = QwarkUtil.getGradeArray(targetFragment.getGradeType())
+        binding.gradePicker.displayedValues = QwarkUtil.getGradeArray(gradeFragment.getGradeType())
 
         binding.examSwitch.setOnCheckedChangeListener { _, isChecked ->
             setGradePickerVisibility(isChecked)
@@ -119,9 +123,9 @@ class GradeCreateBottomSheet : BottomSheetDialogFragment() {
                             examTime = if (binding.examSwitch.isChecked) examDate else -1L
                         )
                         if (::grade.isInitialized) {
-                            targetFragment.update(newGrade)
+                            gradeFragment.update(newGrade)
                         } else {
-                            targetFragment.insert(newGrade)
+                            gradeFragment.insert(newGrade)
                         }
                         dismiss()
                     } catch (e: ParseException) {

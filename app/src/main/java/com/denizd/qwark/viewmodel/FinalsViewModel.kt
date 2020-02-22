@@ -14,7 +14,7 @@ import java.lang.NumberFormatException
 class FinalsViewModel(app: Application) : QwarkViewModel(app) {
 
     private val repo = FinalsRepository(app)
-    val allFinalGrades: LiveData<List<FinalGrade>>? = repo.getFinalGrades(repo.getFinalScoreId())
+    val allFinalGrades: LiveData<List<FinalGrade>> = repo.getFinalGrades(repo.getFinalScoreId())
 
     fun update(finalGrade: FinalGrade) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
@@ -53,7 +53,7 @@ class FinalsViewModel(app: Application) : QwarkViewModel(app) {
 
     private fun checkGrade(finalGrade: FinalGrade): Int = if (finalGrade.grade.toInt() > -1) finalGrade.grade.toInt() else throw NumberFormatException()
 
-    fun getFinalGrade(points: Int): Double = when (points) {
+    fun getFinalGradeScore(points: Int): Double = when (points) {
         in 823..900 -> 1.0
         in 805..822 -> 1.1
         in 787..804 -> 1.2
@@ -107,11 +107,7 @@ class FinalsViewModel(app: Application) : QwarkViewModel(app) {
         }
     }
 
-    fun getCourse(courseId: Int) = runBlocking {
-        withContext(Dispatchers.IO) {
-            repo.getCourse(courseId)
-        }
-    }
-
+    fun getCourse(courseId: Int) = returnBlocking { repo.getCourse(courseId) }
+    fun getFinalGrade(finalGradeId: Int) = returnBlocking { repo.getFinalGrade(finalGradeId) }
     fun getCourseSortType() = repo.getCourseSortType()
 }

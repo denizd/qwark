@@ -42,6 +42,6 @@ class FinalsRepository(app: Application) {
     fun getAllCourses() = dao.getAllCourseExams()
 
     fun getCourse(courseId: Int) = dao.getCourse(courseId)[0]
-
+    fun getFinalGrade(finalGradeId: Int) = dao.getFinalGrade(finalGradeId)[0]
     fun update(finalGrade: FinalGrade) { dao.update(finalGrade) }
 }

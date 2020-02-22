@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import com.denizd.qwark.R
 import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.databinding.CourseCreateDialogBinding
@@ -15,7 +16,7 @@ import com.denizd.qwark.model.Course
 import com.denizd.qwark.model.CourseExam
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class CourseCreateBottomSheet : BottomSheetDialogFragment() {
+class CourseCreateSheet : BottomSheetDialogFragment() {
     
     private var _binding: CourseCreateDialogBinding? = null
     private val binding: CourseCreateDialogBinding get() = _binding!!
@@ -25,7 +26,7 @@ internal class CourseCreateBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments?.size() ?: 0 != 0) course = QwarkUtil.getCourseFromBundle(arguments)
+        if (arguments?.size() ?: 0 != 0) course = (targetFragment as CourseFragment).getCourse(arguments?.getInt("courseId") ?: -1) // QwarkUtil.getCourseFromBundle(arguments)
     }
 
     override fun onAttach(context: Context) {
@@ -121,17 +122,17 @@ internal class CourseCreateBottomSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    private fun openIconBottomSheet() = fragmentManager?.let { fm ->
-        val sheet = IconPickerBottomSheet().apply {
+    private fun openIconBottomSheet() {
+        val sheet = IconPickerSheet().apply {
             arguments = Bundle(1).apply {
                 putString("currentIcon", icon)
             }
         }
         sheet.setTargetFragment(this, 42)
-        sheet.show(fm, sheet.tag)
+        sheet.show((context as FragmentActivity).supportFragmentManager, sheet.tag)
     }
 
-    internal fun setIcon(icon: String) {
+    fun setIcon(icon: String) {
         binding.imageView.setImageResource(QwarkUtil.getDrawableIntForString(icon))
         this.icon = icon
     }

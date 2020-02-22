@@ -50,8 +50,8 @@ open class QwarkFragment : Fragment() {
          * Initialise view resources
          */
         statusBarView = view.rootView.findViewById(R.id.status_bar_view)
-        appBarTitleView = view.rootView.findViewById(R.id.toolbarTxt)
-        superTitleView = view.rootView.findViewById(R.id.text_above)
+        appBarTitleView = view.rootView.findViewById(R.id.app_bar_title)
+        superTitleView = view.rootView.findViewById(R.id.super_title)
         appBar = view.rootView.findViewById(R.id.app_bar_layout)
         snackBarContainer = view.rootView.findViewById(R.id.root_view)
         fab = view.rootView.findViewById(R.id.fab)
@@ -93,11 +93,12 @@ open class QwarkFragment : Fragment() {
      * to its lifecycle owner and therefore cannot calculate the top padding properly. Invoke in
      * onResume instead.
      */
-    protected fun <T : View> T.applyPadding(verticalPadding: Int = 0) {
+    protected fun <T : View> T.applyPadding(horizontalPadding: Int = 0) {
+        val horizontal = horizontalPadding.dpToPx()
         setPadding(
-            verticalPadding.dpToPx(),
+            horizontal,
             (statusBarView.height / 1) + appBar.height,
-            verticalPadding.dpToPx(),
+            horizontal,
             0
         )
     }

@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.denizd.qwark.R
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
-import com.denizd.qwark.sheet.CopyCoursesBottomSheet
-import com.denizd.qwark.sheet.ScoreProfileCreateBottomSheet
-import com.denizd.qwark.sheet.YearCreateBottomSheet
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
+import com.denizd.qwark.sheet.CopyCoursesSheet
+import com.denizd.qwark.sheet.ScoreProfileCreateSheet
+import com.denizd.qwark.sheet.YearCreateSheet
 import com.denizd.qwark.databinding.SettingsFragmentBinding
-import com.denizd.qwark.model.ScoreProfile
 import com.denizd.qwark.model.SchoolYear
 import com.denizd.qwark.viewmodel.SettingsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -22,12 +21,7 @@ class SettingsFragment : QwarkFragment() {
 
     private var _binding: SettingsFragmentBinding? = null
     private val binding: SettingsFragmentBinding get() = _binding!!
-    private lateinit var viewModel: SettingsViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
-    }
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = SettingsFragmentBinding.inflate(inflater, container, false)
@@ -120,7 +114,7 @@ class SettingsFragment : QwarkFragment() {
             if (binding.schoolYearDropdown.text.isNullOrBlank()) {
                 presentErrorSnackBar(getString(R.string.no_school_year_selected))
             } else {
-                val deleteYearSheet = ConfirmDeletionBottomSheet(getString(R.string.delete_school_year_desc, binding.schoolYearDropdown.text.toString())) {
+                val deleteYearSheet = ConfirmDeletionSheet(getString(R.string.delete_school_year_desc, binding.schoolYearDropdown.text.toString())) {
                     viewModel.deleteSchoolYear()
                     binding.schoolYearDropdown.setText("")
                 }
@@ -128,7 +122,7 @@ class SettingsFragment : QwarkFragment() {
             }
         }
         binding.copyCoursesButton.setOnClickListener {
-            openBottomSheet(CopyCoursesBottomSheet())
+            openBottomSheet(CopyCoursesSheet())
         }
 //        binding.copyCoursesButton.setOnLongClickListener {
 //            // TODO this is currently an experiment
@@ -206,7 +200,7 @@ class SettingsFragment : QwarkFragment() {
             if (binding.scoreProfileDropdown.text.isNullOrBlank()) {
                 presentErrorSnackBar(getString(R.string.no_score_profile_selected))
             } else {
-                val deleteScoreProfileSheet = ConfirmDeletionBottomSheet(
+                val deleteScoreProfileSheet = ConfirmDeletionSheet(
                     getString(R.string.delete_score_profile_desc,
                         binding.scoreProfileDropdown.text.toString())
                 ) {
@@ -243,7 +237,7 @@ class SettingsFragment : QwarkFragment() {
         if (edit && currentYear == "") {
             presentErrorSnackBar(getString(R.string.no_school_year_selected))
         } else {
-            val yearCreateSheet = YearCreateBottomSheet().also { sheet ->
+            val yearCreateSheet = YearCreateSheet().also { sheet ->
                 sheet.arguments = Bundle(1).apply {
                     putString("currentYear", if (edit) currentYear else "")
                 }
@@ -264,7 +258,7 @@ class SettingsFragment : QwarkFragment() {
         if (edit && currentScoreProfile == "") {
             presentErrorSnackBar(getString(R.string.no_score_profile_selected))
         } else {
-            openBottomSheet(ScoreProfileCreateBottomSheet().also { sheet ->
+            openBottomSheet(ScoreProfileCreateSheet().also { sheet ->
                 sheet.arguments = Bundle(1).apply {
                     putString("currentScoreProfile", if (edit) currentScoreProfile else "")
                 }

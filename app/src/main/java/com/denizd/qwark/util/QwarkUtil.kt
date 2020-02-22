@@ -148,15 +148,11 @@ object QwarkUtil {
         else -> pointGradeArray
     }
 
-    private fun Double.getGradeType(map: Map<Int, String>): String = map[this.roundToInt()] ?: ""
-
     fun getNewGradeType(grade: Int, type: Int): String = when (type) {
         GRADE_NUMBERED -> numberedGrades[grade] ?: "error"
         GRADE_LETTERED -> letteredGrades[grade] ?: "error"
         else -> "error"
     }
-
-    fun getNumberForLetter(grade: String): Int = lettersToPoints[grade] ?: -1
 
     val timeAtMidnight: Long = GregorianCalendar().apply {
         set(Calendar.HOUR_OF_DAY, 0)
@@ -170,27 +166,15 @@ object QwarkUtil {
     const val GRADE_NUMBERED = 2
     const val GRADE_LETTERED = 3
 
-    private const val SORT_COURSES_TIME_ASC = 0
-    private const val SORT_COURSES_TIME_DESC = 1
-    private const val SORT_COURSES_NAME_ASC = 2
-    private const val SORT_COURSES_NAME_DESC = 3
-    private const val SORT_COURSES_ADV = 4
-    private const val SORT_COURSES_BASIC = 5
-    private const val SORT_COURSES_AVG_ASC = 6
-    private const val SORT_COURSES_AVG_DESC = 7
-    private const val SORT_COURSES_NEXT_EXAM = 8
-
-    fun getCoursesSorted(courses: List<CourseExam>, sortType: Int): List<CourseExam> = when (sortType) { // TODO check what ascending and descending really mean lol
-        SORT_COURSES_TIME_ASC -> courses.asReversed()
-        SORT_COURSES_TIME_DESC -> courses
-        SORT_COURSES_NAME_ASC -> courses.sortedBy { c -> c.name }
-        SORT_COURSES_NAME_DESC -> courses.sortedByDescending { c -> c.name }
-        SORT_COURSES_ADV -> courses.sortedByDescending { c -> c.advanced }
-        SORT_COURSES_BASIC -> courses.sortedBy { c -> c.advanced }
-        SORT_COURSES_AVG_ASC -> courses.sortedBy { c -> c.average.toDouble() }
-        SORT_COURSES_AVG_DESC -> courses.sortedByDescending { c -> c.average.toDouble() }
-        else -> courses.sortedBy { c -> if (c.examTime > 1L) c.examTime else Long.MAX_VALUE } // NEXT_EXAM
-    }
+    const val SORT_COURSES_TIME_ASC = 0
+    const val SORT_COURSES_TIME_DESC = 1
+    const val SORT_COURSES_NAME_ASC = 2
+    const val SORT_COURSES_NAME_DESC = 3
+    const val SORT_COURSES_ADV = 4
+    const val SORT_COURSES_BASIC = 5
+    const val SORT_COURSES_AVG_ASC = 6
+    const val SORT_COURSES_AVG_DESC = 7
+    const val SORT_COURSES_NEXT_EXAM = 8
 
     fun getGradeAsString(grade: Int, leadingZero: Boolean): String = (if (leadingZero && grade < 10) "0" else "") + grade
     fun getGradeWithLeadingZero(grade: Int) = "${if (grade < 10) "0" else ""}$grade"
@@ -227,115 +211,4 @@ object QwarkUtil {
         }
         dialog.show()
     }
-
-    fun putCourseInBundle(fragment: Fragment, course: CourseExam) {
-        val bundle = Bundle(11).apply {
-            putString("name", course.name)
-            putBoolean("advanced", course.advanced)
-            putString("icon", course.icon)
-            putString("colour", course.colour)
-            putString("average", course.average)
-            putInt("oralWeighting", course.oralWeighting)
-            putInt("gradeCount", course.gradeCount)
-            putLong("time", course.time)
-            putInt("courseId", course.courseId)
-            putInt("yearId", course.yearId)
-            putLong("examTime", course.examTime)
-        }
-        fragment.arguments = bundle
-    }
-
-    fun getCourseFromBundle(bundle: Bundle?) = CourseExam(
-        name = bundle?.getString("name") ?: "",
-        advanced = bundle?.getBoolean("advanced") ?: false,
-        icon = bundle?.getString("icon") ?: "",
-        colour = bundle?.getString("colour") ?: "",
-        average = bundle?.getString("average") ?: "",
-        oralWeighting = bundle?.getInt("oralWeighting") ?: 0,
-        gradeCount = bundle?.getInt("gradeCount") ?: 0,
-        time = bundle?.getLong("time") ?: 0L,
-        courseId = bundle?.getInt("courseId") ?: 0,
-        yearId = bundle?.getInt("yearId") ?: 0,
-        examTime = bundle?.getLong("examTime") ?: 0L
-    )
-
-    fun putFinalGradeInBundle(fragment: Fragment, finalGrade: FinalGrade) {
-        val bundle = Bundle(7).apply {
-            putString("name", finalGrade.name)
-            putInt("courseId", finalGrade.courseId)
-            putString("grade", finalGrade.grade)
-            putString("type", finalGrade.type)
-            putString("note", finalGrade.note)
-            putInt("finalGradeId", finalGrade.finalGradeId)
-            putInt("scoreProfileId", finalGrade.scoreProfileId)
-        }
-        fragment.arguments = bundle
-    }
-
-    fun getFinalGradeFromBundle(bundle: Bundle?) = FinalGrade(
-        name = bundle?.getString("name") ?: "",
-        courseId = bundle?.getInt("courseId") ?: 0,
-        grade = bundle?.getString("grade") ?: "",
-        type = bundle?.getString("type") ?: "",
-        note = bundle?.getString("note") ?: "",
-        finalGradeId = bundle?.getInt("finalGradeId") ?: 0,
-        scoreProfileId = bundle?.getInt("scoreProfileId") ?: 0
-    )
-
-    fun putGradeInBundle(fragment: Fragment, grade: Grade) {
-        val bundle = Bundle(8).apply {
-            putInt("grade", grade.grade)
-            putString("note", grade.note)
-            putBoolean("verbal", grade.verbal)
-            putLong("time", grade.time)
-            putInt("weighting", grade.weighting)
-            putLong("examTime", grade.examTime)
-            putInt("gradeId", grade.gradeId)
-            putInt("courseId", grade.courseId)
-        }
-        fragment.arguments = bundle
-    }
-
-    fun getGradeFromBundle(bundle: Bundle?) = Grade(
-        grade = bundle?.getInt("grade") ?: 0,
-        note = bundle?.getString("note") ?: "",
-        verbal = bundle?.getBoolean("verbal") ?: false,
-        time = bundle?.getLong("time") ?: 0L,
-        weighting = bundle?.getInt("weighting") ?: 0,
-        examTime = bundle?.getLong("examTime") ?: 0L,
-        gradeId = bundle?.getInt("gradeId") ?: 0,
-        courseId = bundle?.getInt("courseId") ?: 0
-    )
-
-    fun putNoteInBundle(fragment: Fragment, note: Note) {
-        val bundle = Bundle(5).apply {
-            putString("content", note.content)
-            putBoolean("dismissed", note.dismissed)
-            putLong("time", note.time)
-            putString("category", note.category)
-            putInt("noteId", note.noteId)
-        }
-        fragment.arguments = bundle
-    }
-
-    fun getNoteFromBundle(bundle: Bundle?) = Note(
-        content = bundle?.getString("content") ?: "",
-        dismissed = bundle?.getBoolean("dismissed") ?: false,
-        time = bundle?.getLong("time") ?: 0L,
-        category = bundle?.getString("category") ?: "",
-        noteId = bundle?.getInt("noteId") ?: 0
-    )
-
-    fun getCourseExamAsCourse(c: CourseExam): Course = Course(
-        name = c.name,
-        advanced = c.advanced,
-        icon = c.icon,
-        colour = c.colour,
-        average = c.average,
-        oralWeighting = c.oralWeighting,
-        gradeCount = c.gradeCount,
-        time = c.time,
-        courseId = c.courseId,
-        yearId = c.yearId
-    )
 }

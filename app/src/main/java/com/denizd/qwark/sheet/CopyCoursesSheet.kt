@@ -12,7 +12,7 @@ import com.denizd.qwark.fragment.SettingsFragment
 import com.denizd.qwark.model.SchoolYear
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class CopyCoursesBottomSheet : BottomSheetDialogFragment(), YearAdapter.YearClickListener {
+class CopyCoursesSheet : BottomSheetDialogFragment(), YearAdapter.YearClickListener {
 
     private var _binding: RecyclerDialogBinding? = null
     private val binding: RecyclerDialogBinding get() = _binding!!
@@ -41,7 +41,7 @@ internal class CopyCoursesBottomSheet : BottomSheetDialogFragment(), YearAdapter
             layoutManager = LinearLayoutManager(context)
             adapter = YearAdapter((settingsTargetFragment.getSchoolYears() ?: ArrayList()).filter { y ->
                 y.yearId != settingsTargetFragment.getCurrentSchoolYearId()
-            }, this@CopyCoursesBottomSheet)
+            }, this@CopyCoursesSheet)
             scheduleLayoutAnimation()
         }
     }

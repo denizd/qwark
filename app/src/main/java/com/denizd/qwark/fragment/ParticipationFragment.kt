@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -16,8 +15,8 @@ import com.denizd.qwark.adapter.CourseAdapter
 import com.denizd.qwark.databinding.PaddedRecyclerViewBinding
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.model.Participation
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
-import com.denizd.qwark.sheet.ParticipationLinkBottomSheet
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
+import com.denizd.qwark.sheet.ParticipationLinkSheet
 import com.denizd.qwark.viewmodel.ParticipationViewModel
 
 internal class ParticipationFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
@@ -88,7 +87,7 @@ internal class ParticipationFragment : QwarkFragment(), CourseAdapter.CourseClic
 
     override fun onResume() {
         super.onResume()
-        binding.recyclerView.applyPadding(verticalPadding = 4)
+        binding.recyclerView.applyPadding(horizontalPadding = 4)
     }
 
     override fun onDestroy() {
@@ -118,11 +117,11 @@ internal class ParticipationFragment : QwarkFragment(), CourseAdapter.CourseClic
     }
 
     private fun openLinkSheet() {
-        openBottomSheet(ParticipationLinkBottomSheet())
+        openBottomSheet(ParticipationLinkSheet())
     }
 
     private fun openRemoveLinkSheet(courseName: String, relationId: Int) {
-        openBottomSheet(ConfirmDeletionBottomSheet(
+        openBottomSheet(ConfirmDeletionSheet(
             getString(R.string.confirm_remove_participation_link, courseName, getDay())
         ) {
             viewModel.removeLink(relationId)

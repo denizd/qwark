@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import com.denizd.qwark.R
 import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.databinding.NoteBottomSheetBinding
+import com.denizd.qwark.fragment.NoteFragment
 import com.denizd.qwark.model.Note
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class NoteDisplayBottomSheet : BottomSheetDialogFragment() {
+class NoteDisplaySheet : BottomSheetDialogFragment() {
 
     private var _binding: NoteBottomSheetBinding? = null
     private val binding: NoteBottomSheetBinding get() = _binding!!
@@ -20,7 +21,7 @@ internal class NoteDisplayBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        note = QwarkUtil.getNoteFromBundle(arguments)
+        note = (targetFragment as NoteFragment).getNote(arguments?.getInt("noteId") ?: -1)
     }
 
     override fun onAttach(context: Context) {
@@ -32,18 +33,6 @@ internal class NoteDisplayBottomSheet : BottomSheetDialogFragment() {
         _binding = NoteBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        return super.onCreateDialog(savedInstanceState).also { dialog ->
-//            dialog.setOnShowListener {
-//                BottomSheetBehavior.from(dialog.findViewById<FrameLayout>(
-//                    com.google.android.material.R.id.design_bottom_sheet
-//                )).apply {
-//                    state = BottomSheetBehavior.STATE_EXPANDED
-//                }
-//            }
-//        }
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

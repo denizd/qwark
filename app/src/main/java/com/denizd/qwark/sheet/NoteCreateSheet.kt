@@ -13,7 +13,7 @@ import com.denizd.qwark.model.Note
 import com.denizd.qwark.util.QwarkUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-internal class NoteCreateBottomSheet : BottomSheetDialogFragment() {
+class NoteCreateSheet : BottomSheetDialogFragment() {
 
     private var _binding: NoteCreateDialogBinding? = null
     private val binding: NoteCreateDialogBinding get() = _binding!!
@@ -22,7 +22,7 @@ internal class NoteCreateBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments?.size() ?: 0 != 0) note = QwarkUtil.getNoteFromBundle(arguments)
+        if (arguments?.size() ?: 0 != 0) note = (targetFragment as NoteFragment).getNote(arguments?.getInt("noteId") ?: -1)
     }
 
     override fun onAttach(context: Context) {

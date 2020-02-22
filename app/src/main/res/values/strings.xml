@@ -133,7 +133,7 @@
     <string name="exam_date">Exam date (yyyy-mm-dd)</string>
     <string name="date_format_issue">This date can\'t be parsed</string>
     <string name="exam_past_issue">Passed exams must have a grade associated</string>
-    <string name="open_participation_fragment">Open participation</string>
+    <string name="open_participation_fragment">View participation</string>
 
     <!-- NotesFragment.kt -->
     <string name="notes">Notes</string>
@@ -163,9 +163,12 @@
     <string name="participation_ratio_desc">Hand raised : Spoken</string>
     <string name="delete_participation_confirmation">Are you sure you want to delete this participation?</string>
     <string name="class_session">Class Session</string>
+    <string name="class_session_resumed">Class Session (resumed)</string>
     <string name="long_press_to_cancel">Long-press to cancel</string>
     <string name="long_press_to_finish">Long-press to finish</string>
-    <string name="open_grade_fragment">Open course</string>
+    <string name="open_grade_fragment">View course</string>
+    <string name="participation_too_old">Participation too old to be resumed</string>
+    <string name="participation_resumable">" (resumable)"</string>
 
     <string-array name="days">
         <item>Monday</item>

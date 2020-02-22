@@ -1,5 +1,5 @@
 package com.denizd.qwark.util
 
-internal interface OnBackPressed {
+interface OnBackPressed {
     fun onBackPressed(): Boolean
 }

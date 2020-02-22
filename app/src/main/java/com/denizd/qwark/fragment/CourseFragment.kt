@@ -8,44 +8,44 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.CourseAdapter
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
-import com.denizd.qwark.sheet.CourseCreateBottomSheet
-import com.denizd.qwark.sheet.CourseOptionsBottomSheet
-import com.denizd.qwark.util.QwarkUtil
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
+import com.denizd.qwark.sheet.CourseCreateSheet
+import com.denizd.qwark.sheet.CourseOptionsSheet
 import com.denizd.qwark.databinding.*
-import com.denizd.qwark.sheet.HistoricalAverageBottomSheet
+import com.denizd.qwark.sheet.HistoricalAverageSheet
 import com.denizd.qwark.model.Course
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.util.calculateTotalAverage
+import com.denizd.qwark.util.getSorted
 import com.denizd.qwark.viewmodel.CourseViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.lang.NumberFormatException
 
-internal class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
+class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
 
     private var _binding: PaddedRecyclerViewBinding? = null
     private val binding: PaddedRecyclerViewBinding get() = _binding!!
 
-    private lateinit var viewModel: CourseViewModel
+    private val viewModel: CourseViewModel by viewModels()
     private lateinit var recyclerViewAdapter: CourseAdapter
 
     private var scrollPosition: Parcelable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
         recyclerViewAdapter = CourseAdapter(ArrayList(), this, viewModel.getGradeType())
         viewModel.allCourses.observe(this, Observer { courses ->
-            val c = QwarkUtil.getCoursesSorted(courses, viewModel.getCourseSortType())
-            recyclerViewAdapter.setCourses(c)
+            recyclerViewAdapter.setCourses(courses.getSorted(viewModel.getCourseSortType()))
             if (scrollPosition == null) {
-                binding.recyclerView.scrollToPosition(0)
-                binding.recyclerView.scheduleLayoutAnimation()
+                binding.recyclerView.apply {
+                    scrollToPosition(0)
+                    scheduleLayoutAnimation()
+                }
             } else {
                 binding.recyclerView.layoutManager?.onRestoreInstanceState(scrollPosition)
             }
@@ -105,16 +105,7 @@ internal class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListen
     override fun onResume() {
         super.onResume()
         binding.recyclerView.apply {
-            applyPadding(verticalPadding = 4)
-            /**
-             * On first app launch, setting the padding will not scroll the recycler view items
-             * down. This is a workaround to scroll the recycler view down programmatically.
-             */
-            // TODO this actually doesn't do anything
-//            if (!QwarkUtil.hasAppLaunched) {
-//                scrollToPosition(0)
-//                QwarkUtil.hasAppLaunched = true
-//            }
+            applyPadding(horizontalPadding = 4)
         }
     }
 
@@ -142,8 +133,8 @@ internal class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListen
     }
 
     private fun createOptionsDialog(course: CourseExam) {
-        openBottomSheet(CourseOptionsBottomSheet().also { sheet ->
-            QwarkUtil.putCourseInBundle(sheet, course)
+        openBottomSheet(CourseOptionsSheet().also { sheet ->
+            sheet.arguments = Bundle().apply { putInt("courseId", course.courseId) }
         })
     }
 
@@ -162,7 +153,7 @@ internal class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListen
     fun getAveragesForCourse(courseId: Int) = viewModel.getAveragesForCourses(courseId)
 
     fun createHistoryDialog(courseId: Int, course: String) {
-        openBottomSheet(HistoricalAverageBottomSheet().also { sheet ->
+        openBottomSheet(HistoricalAverageSheet().also { sheet ->
             sheet.arguments = Bundle(2).apply {
                 putString("courseName", course)
                 putInt("courseId", courseId)
@@ -171,18 +162,20 @@ internal class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListen
     }
 
     fun createCourseDialog(course: CourseExam? = null) {
-        openBottomSheet(CourseCreateBottomSheet().also { sheet ->
-            if (course != null) QwarkUtil.putCourseInBundle(sheet, course)
+        openBottomSheet(CourseCreateSheet().also { sheet ->
+            if (course != null) sheet.arguments = Bundle().apply { putInt("courseId", course.courseId) }
         })
     }
 
     fun deleteCourse(course: Course) {
         openBottomSheet(
-            ConfirmDeletionBottomSheet(
+            ConfirmDeletionSheet(
                 getString(R.string.delete_course_and_data_confirmation, course.name)
             ) {
                 viewModel.delete(course)
             }
         )
     }
+
+    fun getCourse(courseId: Int): CourseExam = viewModel.getCourse(courseId)
 }

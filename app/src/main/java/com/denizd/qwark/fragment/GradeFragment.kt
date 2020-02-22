@@ -2,24 +2,22 @@ package com.denizd.qwark.fragment
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.GradeAdapter
-import com.denizd.qwark.sheet.ConfirmDeletionBottomSheet
-import com.denizd.qwark.sheet.GradeCreateBottomSheet
+import com.denizd.qwark.sheet.ConfirmDeletionSheet
+import com.denizd.qwark.sheet.GradeCreateSheet
 import com.denizd.qwark.databinding.GradeFragmentBinding
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.model.Grade
 import com.denizd.qwark.model.HistoricalAvg
-import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.util.calculateAverage
 import com.denizd.qwark.util.getUserDefinedAverage
 import com.denizd.qwark.viewmodel.GradeViewModel
@@ -34,7 +32,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
     private lateinit var weightingString: String
     private lateinit var adapter: GradeAdapter
 
-    private lateinit var viewModel: GradeViewModel
+    private val viewModel: GradeViewModel by viewModels()
     private lateinit var inflater: LayoutInflater
 
     private var _binding: GradeFragmentBinding? = null
@@ -45,12 +43,9 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[GradeViewModel::class.java]
-
-//        currentCourse = QwarkUtil.getCourseFromBundle(arguments)
         schoolYear = arguments?.getString("schoolYear") ?: ""
         currentCourse = viewModel.getCourse(arguments?.getInt("courseId") ?: -1)
-        average = currentCourse.average
+        average = currentCourse.average.getUserDefinedAverage(getGradeType())
         weightingString = "${currentCourse.oralWeighting} / ${100 - currentCourse.oralWeighting}"
 
         viewModel.getGradesByForeignKey(currentCourse.courseId).observe(this, Observer { grades ->
@@ -67,7 +62,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
                 average = filteredGrades.calculateAverage(
                     currentCourse.oralWeighting
                 )
-                binding.average.text = if (filteredGrades.isEmpty()) "X" else average.getUserDefinedAverage(getGradeType())
+                binding.average.text = if (filteredGrades.isEmpty()) "??" else average.getUserDefinedAverage(getGradeType())
                 viewModel.updateAverage(average, filteredGrades.size, currentCourse.courseId)
             }
 
@@ -94,7 +89,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
             currentCourse.name
         )
         fab.hide()
-        with(view.rootView) {
+        with (view.rootView) {
             findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
             findViewById<View>(R.id.view).visibility = View.GONE
         }
@@ -103,7 +98,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
             presentGradeDialog()
         }
 
-        binding.average.text = currentCourse.average
+        binding.average.text = currentCourse.average.getUserDefinedAverage(getGradeType())
         binding.weighting.text = weightingString
 
         binding.recyclerView.adapter = adapter
@@ -135,12 +130,12 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
     }
 
     private fun presentGradeDialog(grade: Grade? = null) {
-        openBottomSheet(GradeCreateBottomSheet().also { sheet ->
-            if (grade == null) {
-                sheet.arguments = Bundle(1).apply { putInt("courseId", currentCourse.courseId) }
+        openBottomSheet(GradeCreateSheet().also { sheet ->
+            sheet.arguments = Bundle(1).apply { if (grade == null) {
+                putInt("courseId", currentCourse.courseId)
             } else {
-                QwarkUtil.putGradeInBundle(sheet, grade)
-            }
+                putInt("gradeId", grade.gradeId)
+            }}
         })
     }
 
@@ -149,7 +144,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
     }
 
     override fun onGradeLongClick(gradeId: Int) {
-        val deletionSheet = ConfirmDeletionBottomSheet(getString(R.string.confirm_grade_deletion)) {
+        val deletionSheet = ConfirmDeletionSheet(getString(R.string.confirm_grade_deletion)) {
             viewModel.delete(gradeId)
         }
         openBottomSheet(deletionSheet)
@@ -157,23 +152,27 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
 
     private fun openParticipationCourseFragment() {
         appBar.setExpanded(true)
-        val f = ParticipationCourseFragment()
-        f.arguments = Bundle().apply {
-            putString("course", currentCourse.name)
-            putInt("courseId", currentCourse.courseId)
-            putBoolean("advanced", currentCourse.advanced)
+        (context as FragmentActivity).supportFragmentManager.also { fm ->
+            if (fm.getBackStackEntryAt(0).name == "ParticipationCourseFragment") {
+                fm.popBackStack()
+            } else {
+                val f = ParticipationCourseFragment()
+                f.arguments = Bundle().apply {
+                    putString("course", currentCourse.name)
+                    putInt("courseId", currentCourse.courseId)
+                    putBoolean("advanced", currentCourse.advanced)
+                }
+                fm.beginTransaction()
+                    .replace(R.id.fragment_container, f)
+                    .addToBackStack(f.name)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+            }
         }
-        // for targetFragment to work, ParticipationFragment needs to be active
-        // TODO fix the dependency on targetFragment (maybe introduce a ParticipationCourseViewModel)
-//        f.setTargetFragment((context as FragmentActivity).supportFragmentManager.findFragmentByTag("ParticipationFragment"), 42)
-        (context as FragmentActivity).supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, f)
-            .addToBackStack(f.name)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
     }
 
     fun insert(grade: Grade) { viewModel.insert(grade) }
     fun update(grade: Grade) { viewModel.update(grade) }
     fun getGradeType(): Int = viewModel.getGradeType()
+    fun getGrade(gradeId: Int) = viewModel.getGrade(gradeId)
 }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import com.denizd.qwark.R
 import com.denizd.qwark.databinding.ClassSessionSheetBinding
@@ -32,6 +33,7 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
             field = value
             binding.spokenButton.text = "$value"
         }
+    private var participationId = -1
     private val time: Long = System.currentTimeMillis()
 
     override fun onAttach(context: Context) {
@@ -46,12 +48,20 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         participationFragment = targetFragment as ParticipationCourseFragment
 
+        arguments?.let { args ->
+            timesHandRaised = args.getInt ("timesHandRaised")
+            timesSpoken = args.getInt("timesSpoken")
+            participationId = args.getInt("participationId")
+            binding.title.text = getString(R.string.class_session_resumed)
+        }
+
         binding.handRaisedButton.apply {
-            setCompoundDrawables(context.getDrawable(R.drawable.hand).also { drawable ->
-                drawable?.bounds = Rect(0, 0, 256, 256)
-                drawable?.setTint(mContext.getColor(R.color.colorAccent))
+            setCompoundDrawables(context.getDrawable(R.drawable.hand)?.also { drawable ->
+                drawable.bounds = Rect(0, 0, 256, 256)
+                drawable.setTint(mContext.getColor(R.color.colorAccent))
             }, null, null, null)
             text = "$timesHandRaised"
             setOnClickListener {
@@ -66,9 +76,9 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
             }
         }
         binding.spokenButton.apply {
-            setCompoundDrawables(context.getDrawable(R.drawable.speech).also { drawable ->
-                drawable?.bounds = Rect(0, 0, 256, 256)
-                drawable?.setTint(mContext.getColor(R.color.colorAccent))
+            setCompoundDrawables(context.getDrawable(R.drawable.speech)?.also { drawable ->
+                drawable.bounds = Rect(0, 0, 256, 256)
+                drawable.setTint(mContext.getColor(R.color.colorAccent))
             }, null, null, null)
             text = "$timesSpoken"
             setOnClickListener {
@@ -104,6 +114,16 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -116,8 +136,10 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
     }
 
     private fun finish() {
-        participationFragment.createParticipation(
-            timesHandRaised, timesSpoken, time
-        )
+        if (participationId == -1) {
+            participationFragment.createParticipation(timesHandRaised, timesSpoken, time)
+        } else {
+            participationFragment.updateParticipation(timesHandRaised, timesSpoken, participationId)
+        }
     }
 }
