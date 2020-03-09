@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.CourseAdapter
 import com.denizd.qwark.databinding.PaddedRecyclerViewBinding
@@ -19,10 +20,9 @@ import com.denizd.qwark.sheet.ConfirmDeletionSheet
 import com.denizd.qwark.sheet.ParticipationLinkSheet
 import com.denizd.qwark.viewmodel.ParticipationViewModel
 
-internal class ParticipationFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
+internal class ParticipationFragment : QwarkFragment(R.layout.padded_recycler_view), CourseAdapter.CourseClickListener {
 
-    private var _binding: PaddedRecyclerViewBinding? = null
-    private val binding: PaddedRecyclerViewBinding get() = _binding!!
+    private val binding: PaddedRecyclerViewBinding by viewBinding(PaddedRecyclerViewBinding::bind)
     private lateinit var viewModel: ParticipationViewModel
     private val recyclerViewAdapter = CourseAdapter(ArrayList(), this, null, true)
 
@@ -59,11 +59,6 @@ internal class ParticipationFragment : QwarkFragment(), CourseAdapter.CourseClic
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = PaddedRecyclerViewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -83,16 +78,6 @@ internal class ParticipationFragment : QwarkFragment(), CourseAdapter.CourseClic
                 getGridColumnCount(resources.configuration), StaggeredGridLayoutManager.VERTICAL
             )
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.recyclerView.applyPadding(horizontalPadding = 4)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onCourseClick(course: CourseExam) {

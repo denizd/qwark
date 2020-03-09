@@ -9,18 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.databinding.ClassSessionSheetBinding
 import com.denizd.qwark.fragment.ParticipationCourseFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlin.random.Random
 
-class ClassSessionSheet : BottomSheetDialogFragment() {
+class ClassSessionSheet : QwarkSheet(R.layout.class_session_sheet) {
 
-    private var _binding: ClassSessionSheetBinding? = null
-    private val binding: ClassSessionSheetBinding get() = _binding!!
-
-    private lateinit var mContext: Context
+    private val binding: ClassSessionSheetBinding by viewBinding(ClassSessionSheetBinding::bind)
     private lateinit var participationFragment: ParticipationCourseFragment
 
     private var timesHandRaised: Int = 0
@@ -35,16 +33,6 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
         }
     private var participationId = -1
     private val time: Long = System.currentTimeMillis()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = ClassSessionSheetBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +49,7 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
         binding.handRaisedButton.apply {
             setCompoundDrawables(context.getDrawable(R.drawable.hand)?.also { drawable ->
                 drawable.bounds = Rect(0, 0, 256, 256)
-                drawable.setTint(mContext.getColor(R.color.colorAccent))
+                drawable.setTint(context.getColor(R.color.colorAccent))
             }, null, null, null)
             text = "$timesHandRaised"
             setOnClickListener {
@@ -78,7 +66,7 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
         binding.spokenButton.apply {
             setCompoundDrawables(context.getDrawable(R.drawable.speech)?.also { drawable ->
                 drawable.bounds = Rect(0, 0, 256, 256)
-                drawable.setTint(mContext.getColor(R.color.colorAccent))
+                drawable.setTint(context.getColor(R.color.colorAccent))
             }, null, null, null)
             text = "$timesSpoken"
             setOnClickListener {
@@ -102,7 +90,7 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
             }
         }
 
-        binding.finishButton.apply {
+        binding.saveButton.apply {
             setOnClickListener {
                 makeToast(R.string.long_press_to_finish)
             }
@@ -124,14 +112,10 @@ class ClassSessionSheet : BottomSheetDialogFragment() {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
 
     private fun makeToast(stringResource: Int) {
         Toast
-            .makeText(mContext, getString(stringResource), Toast.LENGTH_LONG)
+            .makeText(context, getString(stringResource), Toast.LENGTH_LONG)
             .show()
     }
 

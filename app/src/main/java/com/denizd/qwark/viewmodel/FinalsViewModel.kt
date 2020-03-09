@@ -3,7 +3,6 @@ package com.denizd.qwark.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.denizd.qwark.database.FinalsRepository
 import com.denizd.qwark.model.CourseExam
 import com.denizd.qwark.model.FinalGrade
 import com.denizd.qwark.model.SchoolYear
@@ -13,8 +12,7 @@ import java.lang.NumberFormatException
 
 class FinalsViewModel(app: Application) : QwarkViewModel(app) {
 
-    private val repo = FinalsRepository(app)
-    val allFinalGrades: LiveData<List<FinalGrade>> = repo.getFinalGrades(repo.getFinalScoreId())
+    val allFinalGrades: LiveData<List<FinalGrade>> = repo.getFinalGrades(repo.prefs.getFinalScoreId())
 
     fun update(finalGrade: FinalGrade) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
@@ -24,8 +22,8 @@ class FinalsViewModel(app: Application) : QwarkViewModel(app) {
 
     fun getSchoolYearName(courseId: Int) = returnBlocking { repo.getSchoolYearName(courseId) }
 
-    fun getScoreProfileName(): String = repo.getScoreProfileName()
-    fun getGradeType(): Int = repo.getGradeType()
+    fun getScoreProfileName(): String = repo.prefs.getScoreProfileName()
+    fun getGradeType(): Int = repo.prefs.getGradeType()
 
     fun getFinalScore(basicGrades: List<FinalGrade>, advancedGrades: List<FinalGrade>, examGrades: List<FinalGrade>): Int = try {
         var finalScore = 0
@@ -109,5 +107,5 @@ class FinalsViewModel(app: Application) : QwarkViewModel(app) {
 
     fun getCourse(courseId: Int) = returnBlocking { repo.getCourse(courseId) }
     fun getFinalGrade(finalGradeId: Int) = returnBlocking { repo.getFinalGrade(finalGradeId) }
-    fun getCourseSortType() = repo.getCourseSortType()
+    fun getCourseSortType() = repo.prefs.getCourseSortType()
 }

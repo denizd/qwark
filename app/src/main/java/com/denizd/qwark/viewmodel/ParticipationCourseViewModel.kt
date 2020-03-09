@@ -2,12 +2,9 @@ package com.denizd.qwark.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.denizd.qwark.database.ParticipationRepository
 import com.denizd.qwark.model.Participation
 
 class ParticipationCourseViewModel(app: Application) : QwarkViewModel(app) {
-
-    private val repo = ParticipationRepository(app)
 
     fun getAllParticipationsForCourse(courseId: Int): LiveData<List<Participation>> = returnBlocking {
         repo.getAllParticipationsForCourse(courseId)
@@ -22,6 +19,6 @@ class ParticipationCourseViewModel(app: Application) : QwarkViewModel(app) {
     fun createParticipation(timesHandRaised: Int, timesSpoken: Int, time: Long, courseId: Int) = doAsync {
         repo.insert(timesHandRaised, timesSpoken, time, courseId)
     }
-    fun getSchoolYearName() = repo.getSchoolYearName()
+    fun getSchoolYearName() = repo.prefs.getSchoolYearName()
     fun delete(participation: Participation) = doAsync { repo.delete(participation) }
 }

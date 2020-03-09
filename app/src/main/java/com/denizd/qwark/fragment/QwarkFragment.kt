@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +17,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
-open class QwarkFragment : Fragment() {
+open class QwarkFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
 
     private lateinit var _context: Context
 
@@ -32,7 +34,6 @@ open class QwarkFragment : Fragment() {
             appBarTitleView.text = value
             field = value
         }
-    private lateinit var statusBarView: View
     lateinit var appBar: AppBarLayout
     lateinit var snackBarContainer: CoordinatorLayout
     lateinit var fab: ExtendedFloatingActionButton
@@ -49,12 +50,17 @@ open class QwarkFragment : Fragment() {
         /**
          * Initialise view resources
          */
-        statusBarView = view.rootView.findViewById(R.id.status_bar_view)
         appBarTitleView = view.rootView.findViewById(R.id.app_bar_title)
         superTitleView = view.rootView.findViewById(R.id.super_title)
         appBar = view.rootView.findViewById(R.id.app_bar_layout)
         snackBarContainer = view.rootView.findViewById(R.id.root_view)
         fab = view.rootView.findViewById(R.id.fab)
+
+        if (this is GradeFragment || this is ParticipationCourseFragment) {
+            snackBarContainer.resetBottomPadding()
+        } else {
+            snackBarContainer.applyBottomPadding()
+        }
     }
 
     /**
@@ -88,19 +94,21 @@ open class QwarkFragment : Fragment() {
         })
     }
 
-    /**
-     * This function must not be invoked in onViewCreated, as the view will not have been attached
-     * to its lifecycle owner and therefore cannot calculate the top padding properly. Invoke in
-     * onResume instead.
-     */
-    protected fun <T : View> T.applyPadding(horizontalPadding: Int = 0) {
-        val horizontal = horizontalPadding.dpToPx()
-        setPadding(
-            horizontal,
-            (statusBarView.height / 1) + appBar.height,
-            horizontal,
-            0
-        )
+    protected fun NestedScrollView.addFabScrollListener() {
+        setOnScrollChangeListener { _, _, dy, _, doy ->
+            when {
+                dy > doy -> fab.hide()
+                dy < doy -> fab.show()
+            }
+        }
+    }
+
+    private fun <T : View> T.resetBottomPadding() {
+        setPadding(paddingLeft, paddingTop, paddingRight, 0)
+    }
+
+    private fun <T : View> T.applyBottomPadding() {
+        setPadding(paddingLeft, paddingTop, paddingRight, 56.dpToPx())
     }
 
     /**

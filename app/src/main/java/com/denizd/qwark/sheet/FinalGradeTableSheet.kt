@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.denizd.qwark.databinding.TextInputSheetBinding
+import com.denizd.qwark.R
+import com.denizd.qwark.databinding.TextSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-open class TextInputSheet : BottomSheetDialogFragment() {
+class FinalGradeTableSheet : BottomSheetDialogFragment() {
 
-    private var _binding: TextInputSheetBinding? = null
-    protected val binding: TextInputSheetBinding get() = _binding!!
+    private var _binding: TextSheetBinding? = null
+    private val binding: TextSheetBinding get() = _binding!!
     private lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
@@ -20,22 +21,18 @@ open class TextInputSheet : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = TextInputSheetBinding.inflate(inflater, container, false)
+        _binding = TextSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.createButton.setOnClickListener { positiveButtonClicked() }
-        binding.cancelButton.setOnClickListener { negativeButtonClicked() }
+        binding.title.text = mContext.getString(R.string.points_to_grade_conversion_title)
+        binding.content.text = mContext.getString(R.string.points_to_grade_conversion)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-    protected open fun positiveButtonClicked() { dismiss() }
-    protected open fun negativeButtonClicked() { dismiss() }
 }

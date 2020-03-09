@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.NoteAdapter
 import com.denizd.qwark.sheet.ConfirmDeletionSheet
@@ -21,7 +22,7 @@ import com.denizd.qwark.model.Note
 import com.denizd.qwark.viewmodel.NoteViewModel
 import com.google.android.material.appbar.AppBarLayout
 
-class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPressed {
+class NoteFragment : QwarkFragment(R.layout.padded_recycler_view), NoteAdapter.OnNoteClickListener, OnBackPressed {
 
     private lateinit var viewModel: NoteViewModel
     private val adapter = NoteAdapter(ArrayList(), this)
@@ -30,8 +31,7 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
 
     private lateinit var appBarLayout: AppBarLayout
 
-    private var _binding: PaddedRecyclerViewBinding? = null
-    private val binding: PaddedRecyclerViewBinding get() = _binding!!
+    private val binding: PaddedRecyclerViewBinding by viewBinding(PaddedRecyclerViewBinding::bind)
     private var isInCategoryView = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,11 +53,6 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
             StaggeredGridLayoutManager(getGridColumnCount(newConfig), StaggeredGridLayoutManager.VERTICAL)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = PaddedRecyclerViewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,16 +72,6 @@ class NoteFragment : QwarkFragment(), NoteAdapter.OnNoteClickListener, OnBackPre
             }
         }
         binding.recyclerView.addFabScrollListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.recyclerView.applyPadding(horizontalPadding = 4)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onBackPressed(): Boolean {

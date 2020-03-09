@@ -2,23 +2,24 @@ package com.denizd.qwark.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.Window
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.preference.PreferenceManager
 import com.denizd.qwark.R
+import com.denizd.qwark.database.QwarkRepository
 import com.denizd.qwark.fragment.*
 import com.denizd.qwark.fragment.CourseFragment
 import com.denizd.qwark.fragment.FinalsFragment
 import com.denizd.qwark.fragment.NoteFragment
 import com.denizd.qwark.fragment.ParticipationFragment
 import com.denizd.qwark.fragment.SettingsFragment
+import com.denizd.qwark.util.Dependencies
 import com.denizd.qwark.util.QwarkUtil
 
-class MainViewModel(val app: Application) : AndroidViewModel(app) {
-
-    private val prefs = PreferenceManager.getDefaultSharedPreferences(app.applicationContext)
+class MainViewModel(val app: Application) : QwarkViewModel(app) {
 
     fun getFragmentType(type: Int): String = when (type) { // TODO replace with Fragment#tag
         R.id.courses -> "CourseFragment"
@@ -37,24 +38,25 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     fun applyTheme(window: Window, context: Context) {
-        when (prefs.getInt("dark_mode", 2)) {
-            0 ->        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            1 ->        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            else ->     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(when (repo.prefs.getAppTheme()) {
+            0 ->        AppCompatDelegate.MODE_NIGHT_NO
+            1 ->        AppCompatDelegate.MODE_NIGHT_YES
+            else ->     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        })
+        ContextCompat.getColor(context, R.color.colorBackground).also { barColour ->
+            window.navigationBarColor = barColour
+            window.statusBarColor = barColour
         }
-        val barColour = ContextCompat.getColor(context, R.color.colorBackground)
-        window.navigationBarColor = barColour
-        window.statusBarColor = barColour
     }
 
     fun checkForFirstTimeYearNotice(context: Context) {
-        if (prefs.getBoolean("first_launch", true)) {
+        if (repo.prefs.getFirstLaunch()) {
             QwarkUtil.createInfoDialog(
                 context,
                 app.getString(R.string.alert_create_school_year_title),
                 app.getString(R.string.alert_create_school_year_desc)
             )
-            prefs.edit().putBoolean("first_launch", false).apply()
+            repo.prefs.setFirstLaunch(false)
         }
     }
 }

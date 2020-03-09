@@ -30,7 +30,7 @@ interface QwarkDao {
     fun getCoursesByYearIdAsList(yearId: Int): List<CourseExam>
 
     @Query("SELECT *, -1 AS exam_time FROM course WHERE course_id = :courseId")
-    fun getCourse(courseId: Int): List<CourseExam>
+    fun getCourse(courseId: Int): CourseExam
 
     @Insert
     fun insert(course: Course)
@@ -68,7 +68,7 @@ interface QwarkDao {
     fun deleteGrade(gradeId: Int)
 
     @Query("SELECT * FROM grade WHERE grade_id = :gradeId")
-    fun getGrade(gradeId: Int): List<Grade>
+    fun getGrade(gradeId: Int): Grade
 
 
     // notes
@@ -97,7 +97,7 @@ interface QwarkDao {
     fun getAllCategories(): List<String>
 
     @Query("SELECT * FROM note WHERE note_id = :noteId")
-    fun getNote(noteId: Int): List<Note>
+    fun getNote(noteId: Int): Note
 
 
     // historical averages
@@ -165,7 +165,7 @@ interface QwarkDao {
     fun insertAll(finalGrades: Array<FinalGrade>)
 
     @Query("SELECT * FROM final_grade WHERE final_grade_id = :finalGradeId")
-    fun getFinalGrade(finalGradeId: Int): List<FinalGrade>
+    fun getFinalGrade(finalGradeId: Int): FinalGrade
 
 
     // school days

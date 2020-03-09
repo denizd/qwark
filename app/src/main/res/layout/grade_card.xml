@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/QwarkCard"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -65,9 +67,9 @@
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:id="@+id/progress_bar"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="3dp"
             android:progressTint="@color/colorAccent"
-            android:progressBackgroundTint="@color/colorCardBackground"/>
+            android:progressBackgroundTint="@color/colorBackground"/>
 
     </LinearLayout>
 

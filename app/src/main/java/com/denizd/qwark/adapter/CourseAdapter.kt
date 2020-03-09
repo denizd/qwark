@@ -53,7 +53,7 @@ class CourseAdapter(private var courses: List<CourseExam>,
         val context = holder.averageTextView.context
 
         holder.backgroundView.setBackgroundColor(
-            context.getColor(if (currentItem.advanced) R.color.colorAccent else R.color.colorCardBackground)
+            context.getColor(if (currentItem.advanced) R.color.colorAccent else R.color.colorBackground)
         )
         val textColour = context.getColor(if (currentItem.advanced) R.color.colorTextInverted else R.color.colorText)
 

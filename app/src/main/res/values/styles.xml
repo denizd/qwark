@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@color/colorBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/manrope_medium</item>
         <item name="android:colorEdgeEffect">@color/colorAccent</item>
@@ -13,7 +13,6 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeSmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeMediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeLargeComponent</item>
-        <item name="cardBackgroundColor">@color/colorCardBackground</item>
         <item name="cornerRadius">@dimen/cardCornerRadius</item>
         <item name="cardElevation">3dp</item>
         <item name="android:textColor">@color/colorText</item>
@@ -23,9 +22,17 @@
         <item name="boxCornerRadiusBottomEnd">@dimen/cardCornerRadius</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="boxStrokeWidth">1dp</item>
-<!--        <item name="android:statusBarColor">@color/colorAppBarBackground</item>-->
+<!--        <item name="android:statusBarColor">@color/colorBackground</item>-->
 <!--        <item name="android:windowTranslucentStatus">true</item>-->
 <!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+    </style>
+
+    <style name="QwarkCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/colorBackground</item>
+        <item name="strokeColor">@color/strokeColor</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
     </style>
 
     <!-- Launch / splash screen -->

@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.GradeAdapter
 import com.denizd.qwark.sheet.ConfirmDeletionSheet
@@ -23,7 +23,7 @@ import com.denizd.qwark.util.getUserDefinedAverage
 import com.denizd.qwark.viewmodel.GradeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
+class GradeFragment : QwarkFragment(R.layout.grade_fragment), GradeAdapter.GradeClickListener {
 
     private lateinit var currentCourse: CourseExam
     private var average = ""
@@ -35,8 +35,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
     private val viewModel: GradeViewModel by viewModels()
     private lateinit var inflater: LayoutInflater
 
-    private var _binding: GradeFragmentBinding? = null
-    private val binding: GradeFragmentBinding get() = _binding!!
+    private val binding: GradeFragmentBinding by viewBinding(GradeFragmentBinding::bind)
 
     private var scrollPosition: Parcelable? = null
 
@@ -75,11 +74,6 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
         adapter = GradeAdapter(ArrayList(), this, getGradeType())
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = GradeFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -109,16 +103,6 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.paddingView.applyPadding()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     private fun insertNewHistoricalAverage() {
         viewModel.insert(
             HistoricalAvg(
@@ -145,7 +129,7 @@ class GradeFragment : QwarkFragment(), GradeAdapter.GradeClickListener {
 
     override fun onGradeLongClick(gradeId: Int) {
         val deletionSheet = ConfirmDeletionSheet(getString(R.string.confirm_grade_deletion)) {
-            viewModel.delete(gradeId)
+            viewModel.deleteGrade(gradeId)
         }
         openBottomSheet(deletionSheet)
     }

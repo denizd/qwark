@@ -1,12 +1,11 @@
 package com.denizd.qwark.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.sheet.ConfirmDeletionSheet
 import com.denizd.qwark.sheet.CopyCoursesSheet
@@ -17,16 +16,10 @@ import com.denizd.qwark.model.SchoolYear
 import com.denizd.qwark.viewmodel.SettingsViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class SettingsFragment : QwarkFragment() {
+class SettingsFragment : QwarkFragment(R.layout.settings_fragment) {
 
-    private var _binding: SettingsFragmentBinding? = null
-    private val binding: SettingsFragmentBinding get() = _binding!!
+    private val binding: SettingsFragmentBinding by viewBinding(SettingsFragmentBinding::bind)
     private val viewModel: SettingsViewModel by viewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = SettingsFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,7 +87,7 @@ class SettingsFragment : QwarkFragment() {
                     )
                 )
                 try {
-                    setText(viewModel.getCurrentSchoolYear(), false)
+                    setText(viewModel.getSchoolYearName(), false)
                 } catch (e: IndexOutOfBoundsException) {
                     // do nothing if no school years exist or none has been selected
                 }
@@ -210,16 +203,6 @@ class SettingsFragment : QwarkFragment() {
                 openBottomSheet(deleteScoreProfileSheet)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.settingsScrollView.applyPadding()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     fun copyCourses(yearId: Int) {

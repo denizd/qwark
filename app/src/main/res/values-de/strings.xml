@@ -11,6 +11,7 @@
     <string name="edit">Bearbeiten</string>
     <string name="finish">Beenden</string>
     <string name="create">Erstellen</string>
+    <string name="save">Speichern</string>
     <string name="general">Allgemein</string>
     <string name="alert_create_school_year_title">Erstelle ein Schuljahr</string>
     <string name="alert_create_school_year_desc">Bevor du Kurse und Abschlussnoten hinzufügst, gehe in die Einstellungen und erstelle ein Schuljahr und ein Abschlussprofil!</string>
@@ -138,6 +139,8 @@
     <string name="clear_final_grade_error">Note kann nicht gelöscht werden; ist bereits leer</string>
     <string name="pick_a_year">Wähle ein Schuljahr</string>
     <string name="pick_a_course">Wähle einen Kurs</string>
+    <string name="conversion_table">Umrechnungstabelle</string>
+    <string name="points_to_grade_conversion_title">Punkte zu Note-Umrechnungstabelle</string>
 
     <!-- SettingsFragment.kt -->
     <string name="settings">Einstellungen</string>

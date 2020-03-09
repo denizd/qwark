@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.ParticipationAdapter
 import com.denizd.qwark.databinding.GradeFragmentBinding
@@ -19,10 +20,9 @@ import com.denizd.qwark.viewmodel.ParticipationCourseViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class ParticipationCourseFragment : QwarkFragment(), ParticipationAdapter.ParticipationClickListener {
+class ParticipationCourseFragment : QwarkFragment(R.layout.grade_fragment), ParticipationAdapter.ParticipationClickListener {
 
-    private var _binding: GradeFragmentBinding? = null
-    private val binding: GradeFragmentBinding get() = _binding!!
+    private val binding: GradeFragmentBinding by viewBinding(GradeFragmentBinding::bind)
     private var course: String = ""
     private var courseId: Int = 0
     private var advanced: Boolean = false
@@ -53,11 +53,6 @@ class ParticipationCourseFragment : QwarkFragment(), ParticipationAdapter.Partic
             binding.recyclerView.scheduleLayoutAnimation()
             viewModel.updateParticipation("${participationArray[0]}|${participationArray[1]}", courseId)
         })
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = GradeFragmentBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,16 +92,6 @@ class ParticipationCourseFragment : QwarkFragment(), ParticipationAdapter.Partic
         }
 
         binding.average.text = averageText
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.paddingView.applyPadding()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onParticipationClick(participation: Participation) {

@@ -17,5 +17,6 @@ enum class PreferenceKey(val value: String) {
     PARTICIPATION_DAY("participation_day"),
 
     // Bools
-    SHOW_GRADE_AVERAGE("show_grade_average")
+    SHOW_GRADE_AVERAGE("show_grade_average"),
+    FIRST_LAUNCH("first_launch")
 }

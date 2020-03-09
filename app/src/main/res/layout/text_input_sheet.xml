@@ -29,11 +29,7 @@
         android:layout_marginEnd="24dp"
         android:hint="@string/school_year_cap"
         android:textColorHint="@color/colorHint"
-        android:importantForAutofill="no"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusBottomStart="12dp">
+        android:importantForAutofill="no">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text"

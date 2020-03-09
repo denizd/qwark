@@ -14,7 +14,7 @@ import com.denizd.qwark.model.Note
 import com.denizd.qwark.model.SchoolYear
 
 @Database(entities = [Course::class, Grade::class, Note::class, HistoricalAvg::class, SchoolYear::class, FinalGrade::class, ScoreProfile::class, Participation::class, SchoolDay::class, CourseDayRelation::class], version = 9, exportSchema = false)
-internal abstract class QwarkDatabase : RoomDatabase() {
+abstract class QwarkDatabase : RoomDatabase() {
 
     abstract fun dao(): QwarkDao
 

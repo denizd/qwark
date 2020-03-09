@@ -1,39 +1,39 @@
 package com.denizd.qwark.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.denizd.qwark.R
+import com.denizd.qwark.databinding.AverageCardBinding
 import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.model.HistoricalAvg
+import com.denizd.qwark.util.getUserDefinedAverage
 import java.util.*
 
-internal class HistoricalAverageAdapter(private var averages: List<HistoricalAvg>?) : RecyclerView.Adapter<HistoricalAverageAdapter.AverageViewHolder>() {
+class HistoricalAverageAdapter(private val averages: List<HistoricalAvg>, private val gradeType: Int) : RecyclerView.Adapter<HistoricalAverageAdapter.AverageViewHolder>() {
 
-    internal class AverageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val grade: TextView = view.findViewById(R.id.grade)
-        val time: TextView = view.findViewById(R.id.time)
-    }
+    class AverageViewHolder(val binding: AverageCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AverageViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.average_card, parent, false)
-        return AverageViewHolder(v)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AverageViewHolder = AverageViewHolder(
+        AverageCardBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
 
     override fun onBindViewHolder(holder: AverageViewHolder, position: Int) {
-        val currentItem = averages!![position]
+        val currentItem = averages[position]
 
-        val leadingZero = if (currentItem.average.toDouble() < 10.0) "0%s" else "%s"
-        holder.grade.text = String.format(leadingZero, currentItem.average) // TODO this conflicts with Points (Precise)
-        holder.time.text = QwarkUtil.getSimpleDateTimeFormat().format(Date(currentItem.time))
+        with (holder.binding) {
+            grade.text = currentItem.average.getUserDefinedAverage(gradeType)
+            time.text = QwarkUtil.getSimpleDateTimeFormat().format(Date(currentItem.time))
+        }
     }
 
-    override fun getItemCount(): Int = averages?.size ?: 0
+    override fun getItemCount(): Int = averages.size
 
-    fun setAverages(averages: List<HistoricalAvg>) {
-        this.averages = averages
-        notifyDataSetChanged()
-    }
+//    fun setAverages(averages: List<HistoricalAvg>) {
+//        this.averages = averages
+//        notifyDataSetChanged()
+//    }
 }

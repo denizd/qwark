@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.CourseAdapter
 import com.denizd.qwark.sheet.ConfirmDeletionSheet
@@ -26,11 +27,9 @@ import com.denizd.qwark.viewmodel.CourseViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.lang.NumberFormatException
 
-class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
+class CourseFragment : QwarkFragment(R.layout.padded_recycler_view), CourseAdapter.CourseClickListener {
 
-    private var _binding: PaddedRecyclerViewBinding? = null
-    private val binding: PaddedRecyclerViewBinding get() = _binding!!
-
+    private val binding: PaddedRecyclerViewBinding by viewBinding(PaddedRecyclerViewBinding::bind)
     private val viewModel: CourseViewModel by viewModels()
     private lateinit var recyclerViewAdapter: CourseAdapter
 
@@ -42,10 +41,7 @@ class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
         viewModel.allCourses.observe(this, Observer { courses ->
             recyclerViewAdapter.setCourses(courses.getSorted(viewModel.getCourseSortType()))
             if (scrollPosition == null) {
-                binding.recyclerView.apply {
-                    scrollToPosition(0)
-                    scheduleLayoutAnimation()
-                }
+                binding.recyclerView.scheduleLayoutAnimation()
             } else {
                 binding.recyclerView.layoutManager?.onRestoreInstanceState(scrollPosition)
             }
@@ -68,11 +64,6 @@ class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
             getGridColumnCount(newConfig),
             StaggeredGridLayoutManager.VERTICAL
         )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = PaddedRecyclerViewBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,18 +91,6 @@ class CourseFragment : QwarkFragment(), CourseAdapter.CourseClickListener {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.recyclerView.apply {
-            applyPadding(horizontalPadding = 4)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onCourseClick(course: CourseExam) {

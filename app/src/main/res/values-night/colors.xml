@@ -2,7 +2,6 @@
 <resources>
     <color name="colorAccent">#6abf69</color>
     <color name="colorBackground">#121212</color>
-    <color name="colorAppBarBackground">#E6121212</color>
     <color name="colorCardBackground">#222222</color>
     <color name="colorTextHighlight">@color/colorAccent</color>
     <color name="colorText">#e0e0e0</color>
@@ -14,4 +13,5 @@
     <color name="colorTextWhite">#e0e0e0</color>
     <color name="colorAccentedControl">@color/colorText</color>
     <color name="colorSplashLogo">@color/colorText</color>
+    <color name="strokeColor">#424242</color>
 </resources>

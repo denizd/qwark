@@ -37,7 +37,7 @@ class HistoricalAverageSheet : BottomSheetDialogFragment() {
         binding.title.text = getString(R.string.averages_for_course, arguments?.getString("courseName"))
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 1)
-            adapter = HistoricalAverageAdapter(data)
+            adapter = HistoricalAverageAdapter(data, targetFragment.getGradeType())
         }
     }
 

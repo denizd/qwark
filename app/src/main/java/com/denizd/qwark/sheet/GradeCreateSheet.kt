@@ -119,7 +119,7 @@ class GradeCreateSheet : BottomSheetDialogFragment() {
                             note = binding.noteEditText.text.toString(),
                             time = if (::grade.isInitialized) grade.time else System.currentTimeMillis(),
                             gradeId = if (::grade.isInitialized) grade.gradeId else 0,
-                            courseId = courseId,
+                            courseId = if (::grade.isInitialized) grade.courseId else courseId,
                             examTime = if (binding.examSwitch.isChecked) examDate else -1L
                         )
                         if (::grade.isInitialized) {

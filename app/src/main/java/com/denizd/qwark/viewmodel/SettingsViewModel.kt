@@ -3,38 +3,34 @@ package com.denizd.qwark.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.denizd.qwark.database.QwarkClient
-import com.denizd.qwark.util.QwarkPreferences
-import com.denizd.qwark.database.SettingsRepository
 import com.denizd.qwark.model.ScoreProfile
 import com.denizd.qwark.model.SchoolYear
 
 class SettingsViewModel(private val app: Application) : QwarkViewModel(app) {
 
-    private val repo = SettingsRepository(app)
     val allYears: LiveData<List<SchoolYear>> = repo.allYears
     val allScoreProfiles: LiveData<List<ScoreProfile>> = repo.allScoreProfiles
-    private val prefs: QwarkPreferences = QwarkPreferences.getPrefs(app.applicationContext)
 
     // Preference getters
-    fun getAppTheme() = repo.getAppTheme()
-    fun getShowGradeAverage() = repo.getShowGradeAverage()
-    fun getCourseSortType(): Int = prefs.getCourseSortType()
-    fun getGradeType() = repo.getGradeType()
-    fun getScoreProfileName() = repo.getScoreProfileName()
-    fun getCurrentSchoolYear(): String = repo.getCurrentSchoolYear()
-    fun getCurrentSchoolYearId(): Int = repo.getCurrentSchoolYearId()
-    fun getParticipationDisplay(): Int = repo.getParticipationDisplay()
-    fun getParticipationDay(): Int = repo.getParticipationDay()
+    fun getAppTheme() = repo.prefs.getAppTheme()
+    fun getShowGradeAverage() = repo.prefs.getShowGradeAverage()
+    fun getCourseSortType(): Int = repo.prefs.getCourseSortType()
+    fun getGradeType() = repo.prefs.getGradeType()
+    fun getScoreProfileName() = repo.prefs.getScoreProfileName()
+    fun getSchoolYearName(): String = repo.prefs.getSchoolYearName()
+    fun getCurrentSchoolYearId(): Int = repo.prefs.getCurrentSchoolYearId()
+    fun getParticipationDisplay(): Int = repo.prefs.getParticipationDisplay()
+    fun getParticipationDay(): Int = repo.prefs.getParticipationDay()
 
     // Preference setters
-    fun setAppTheme(value: Int) { repo.setAppTheme(value) }
-    fun setShowGradeAverage(value: Boolean) { repo.setShowGradeAverage(value) }
-    fun setCourseSortType(value: Int) { prefs.setCourseSortType(value) }
-    fun setGradeType(value: Int) { repo.setGradeType(value) }
+    fun setAppTheme(value: Int) { repo.prefs.setAppTheme(value) }
+    fun setShowGradeAverage(value: Boolean) { repo.prefs.setShowGradeAverage(value) }
+    fun setCourseSortType(value: Int) { repo.prefs.setCourseSortType(value) }
+    fun setGradeType(value: Int) { repo.prefs.setGradeType(value) }
     fun setCurrentScoreProfile(scoreProfile: ScoreProfile) { repo.setCurrentScoreProfile(scoreProfile) }
     fun updateSchoolYear(schoolYear: SchoolYear) { repo.setCurrentSchoolYear(schoolYear) }
-    fun setParticipationDisplay(value: Int) { repo.setParticipationDisplay(value) }
-    fun setParticipationDay(value: Int) { repo.setParticipationDay(value) }
+    fun setParticipationDisplay(value: Int) { repo.prefs.setParticipationDisplay(value) }
+    fun setParticipationDay(value: Int) { repo.prefs.setParticipationDay(value) }
 
     // Database functions
     fun insert(schoolYear: SchoolYear) = doAsync { repo.insert(schoolYear) }

@@ -1,6 +1,5 @@
 package com.denizd.qwark.fragment
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -11,22 +10,19 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.adapter.FinalGradeAdapter
-import com.denizd.qwark.sheet.ConfirmDeletionSheet
-import com.denizd.qwark.sheet.FinalsCreateSheet
-import com.denizd.qwark.sheet.FinalsOptionsSheet
 import com.denizd.qwark.databinding.FinalsFragmentBinding
-import com.denizd.qwark.sheet.FinalsLinkSheet
 import com.denizd.qwark.model.FinalGrade
+import com.denizd.qwark.sheet.*
 import com.denizd.qwark.viewmodel.FinalsViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListener {
+class FinalsFragment : QwarkFragment(R.layout.finals_fragment), FinalGradeAdapter.FinalGradeClickListener {
 
     private lateinit var viewModel: FinalsViewModel
-    private var _binding: FinalsFragmentBinding? = null
-    private val binding: FinalsFragmentBinding get() = _binding!!
+    private val binding: FinalsFragmentBinding by viewBinding(FinalsFragmentBinding::bind)
 
     private var pointsText = ""
     private var gradeText = ""
@@ -80,11 +76,6 @@ class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListene
         binding.gradeTextview.text = gradeText
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FinalsFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -94,7 +85,16 @@ class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListene
         } else {
             getString(R.string.score_profile_template, viewModel.getScoreProfileName())
         }
-        fab.hide()
+        fab.apply {
+            // temporary until the scroll situation can be figured out
+//            show()
+            hide()
+//            text = getString(R.string.conversion_table)
+//            setOnClickListener {
+//                openBottomSheet(FinalGradeTableSheet())
+//            }
+        }
+//        binding.scrollView.addFabScrollListener()
 
         val layoutManagerBasic = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val layoutManagerAdvanced = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -110,18 +110,7 @@ class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListene
 
     override fun onResume() {
         super.onResume()
-        binding.paddingView.apply {
-            applyPadding()
-        }
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.textLayout?.applyPadding()
-        }
         setTextForGradeTextViews()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onFinalGradeClick(finalGrade: FinalGrade) {
@@ -146,6 +135,7 @@ class FinalsFragment : QwarkFragment(), FinalGradeAdapter.FinalGradeClickListene
     fun getAllCourses() = viewModel.getAllCourses()
 
     fun viewLinkedCourse(courseId: Int) {
+        appBar.setExpanded(true)
         val f = GradeFragment().also { fragment ->
             fragment.arguments = Bundle().apply {
                 putInt("courseId", courseId)

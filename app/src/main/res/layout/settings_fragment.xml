@@ -20,15 +20,13 @@
             android:layoutAnimation="@anim/layout_animation_fall_down">
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/QwarkCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/cardCornerRadius"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/colorCardBackground">
+                android:layout_marginBottom="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,15 +77,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/QwarkCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/cardCornerRadius"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/colorCardBackground">
+                android:layout_marginBottom="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -290,15 +286,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/QwarkCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/cardCornerRadius"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/colorCardBackground">
+                android:layout_marginBottom="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -376,15 +370,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/QwarkCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/cardCornerRadius"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/colorCardBackground">
+                android:layout_marginBottom="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

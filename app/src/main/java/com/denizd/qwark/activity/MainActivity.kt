@@ -1,57 +1,45 @@
 package com.denizd.qwark.activity
 
-import android.graphics.Color
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.ViewAnimationUtils
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
+import com.denizd.qwark.database.QwarkRepository
 import com.denizd.qwark.databinding.ActivityMainBinding
 import com.denizd.qwark.fragment.*
+import com.denizd.qwark.util.Dependencies
+import com.denizd.qwark.util.QwarkPreferences
 import com.denizd.qwark.viewmodel.MainViewModel
+import kotlin.math.hypot
+import kotlin.random.Random
 
 class MainActivity : FragmentActivity() {
 
     private lateinit var viewModel: MainViewModel
-
-    private var _binding: ActivityMainBinding? = null
-    private val binding: ActivityMainBinding get() = _binding!!
+    private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 //        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 42)
 
+        Dependencies.repo = QwarkRepository(application)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.applyTheme(window, this)
         viewModel.checkForFirstTimeYearNotice(this)
-
-        binding.appBarLayout.also { appBarLayout ->
-            appBarLayout.setOnApplyWindowInsetsListener { _, insets ->
-                (appBarLayout.layoutParams as ViewGroup.MarginLayoutParams)
-                    .topMargin = insets.systemWindowInsetTop
-                insets
-            }
-        }
-
-        // TODO remove this translucent app bar layout stuff, it's hard to maintain
-        window.decorView.systemUiVisibility = if (resources.getBoolean(R.bool.isLight)) {
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
-
-        window.attributes = window.attributes.apply {
-            flags and WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS.inv()
-        }
-        window.statusBarColor = Color.TRANSPARENT
 
         binding.bottomNav.setOnNavigationItemSelectedListener { item ->
             binding.appBarLayout.setExpanded(true)
@@ -78,6 +66,27 @@ class MainActivity : FragmentActivity() {
 //        }
 
         // TODO reselected listener for scrolling up
+
+        resources.getStringArray(R.array.greetings).also { array ->
+            binding.greetingTextView.text = String.format(array[Random.nextInt(array.size)], "TODO")
+        }
+        Handler().postDelayed({
+            binding.splashScreen.apply {
+                val cx = width / 2
+                val cy = height / 2
+                val initialRadius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
+
+                ViewAnimationUtils.createCircularReveal(this, cx, cy, initialRadius, 0f).also { anim ->
+                    anim.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            visibility = View.GONE
+                        }
+                    })
+                    anim.start()
+                }
+            }
+        }, 1200)
     }
 
     override fun onResume() {
@@ -86,11 +95,6 @@ class MainActivity : FragmentActivity() {
             binding.bottomNav.selectedItemId = R.id.courses
             loadFragment(viewModel.getFragmentType(R.id.courses))
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     private fun loadFragment(type: String): Boolean {
