@@ -16,6 +16,9 @@
     <string name="alert_create_school_year_title">Erstelle ein Schuljahr</string>
     <string name="alert_create_school_year_desc">Bevor du Kurse und Abschlussnoten hinzufügst, gehe in die Einstellungen und erstelle ein Schuljahr und ein Abschlussprofil!</string>
     <string name="to_be_implemented">Wird noch hinzugefügt</string>
+    <string name="exams">Klausuren</string>
+    <string name="exam_reminder">Klausurerinnerung: %s</string>
+    <string name="writing_an_exam_today">Heute schreibst du eine Klausur in %s!</string>
 
     <!-- CourseFragment.kt -->
     <string name="course">Kurs</string>
@@ -145,6 +148,8 @@
     <!-- SettingsFragment.kt -->
     <string name="settings">Einstellungen</string>
 
+    <string name="set_exam_notification_time">Stelle Zeit für Klausurbenachrichtigung</string>
+    <string name="exam_notification_time_placeholder">Derzeit eingestellt auf %s</string>
     <string name="course_sort_type">Sortiere Kurse nach</string>
     <string-array name="course_sort_type_options">
         <item>Zeit hinzugefügt (aufsteigend)</item>

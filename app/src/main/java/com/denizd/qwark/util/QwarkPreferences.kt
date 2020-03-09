@@ -12,6 +12,7 @@ class QwarkPreferences(context: Context) {
     fun getString(key: PreferenceKey, default: String = ""): String = prefs.getString(key.value, default) ?: default
     fun getInt(key: PreferenceKey, default: Int = 0): Int = prefs.getInt(key.value, default)
     fun getBool(key: PreferenceKey, default: Boolean = false): Boolean = prefs.getBoolean(key.value, default)
+    fun getLong(key: PreferenceKey, default: Long = 0L): Long = prefs.getLong(key.value, default)
 
     fun setString(key: PreferenceKey, value: String): QwarkPreferences {
         edit.putString(key.value, value).apply()
@@ -23,6 +24,10 @@ class QwarkPreferences(context: Context) {
     }
     fun setBool(key: PreferenceKey, value: Boolean): QwarkPreferences {
         edit.putBoolean(key.value, value).apply()
+        return this
+    }
+    fun setLong(key: PreferenceKey, value: Long): QwarkPreferences {
+        edit.putLong(key.value, value).apply()
         return this
     }
 
@@ -40,6 +45,8 @@ class QwarkPreferences(context: Context) {
     fun getFinalScoreId(): Int = getInt(PreferenceKey.SCORE_PROFILE_ID)
     fun getFirstLaunch(): Boolean = getBool(PreferenceKey.FIRST_LAUNCH)
     fun getCurrentSchoolYearId(): Int = getInt(PreferenceKey.SCHOOL_YEAR_ID)
+    fun getIsNotificationChannelCreated(): Boolean = getBool(PreferenceKey.IS_NOTIFICATION_CHANNEL_CREATED)
+    fun getExamNotificationTime(): Long = getLong(PreferenceKey.EXAM_NOTIFICATION_TIME, 25200000L)
 
     fun setCourseSortType(value: Int) { setInt(PreferenceKey.COURSE_SORT_TYPE, value) }
     fun setParticipationDisplay(value: Int) { setInt(PreferenceKey.PARTICIPATION_DISPLAY, value) }
@@ -48,4 +55,6 @@ class QwarkPreferences(context: Context) {
     fun setFirstLaunch(value: Boolean) { setBool(PreferenceKey.FIRST_LAUNCH, value) }
     fun setShowGradeAverage(value: Boolean) { setBool(PreferenceKey.SHOW_GRADE_AVERAGE, value) }
     fun setGradeType(value: Int) { setInt(PreferenceKey.GRADE_TYPE, value) }
+    fun setIsNotificationChannelCreated(value: Boolean) { setBool(PreferenceKey.IS_NOTIFICATION_CHANNEL_CREATED, value) }
+    fun setExamNotificationTime(value: Long) { setLong(PreferenceKey.EXAM_NOTIFICATION_TIME, value) }
 }

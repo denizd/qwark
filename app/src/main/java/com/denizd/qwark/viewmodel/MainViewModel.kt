@@ -59,4 +59,6 @@ class MainViewModel(val app: Application) : QwarkViewModel(app) {
             repo.prefs.setFirstLaunch(false)
         }
     }
+
+    fun getExamNotificationTime(): Long = repo.prefs.getExamNotificationTime()
 }

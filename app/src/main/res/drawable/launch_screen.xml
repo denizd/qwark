@@ -8,7 +8,7 @@
     <item
         android:drawable="@drawable/bolt"
         android:gravity="center"
-        android:width="120dp"
+        android:width="184dp"
         android:height="184dp"
         android:scaleType="centerInside">
     </item>

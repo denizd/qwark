@@ -18,5 +18,9 @@ enum class PreferenceKey(val value: String) {
 
     // Bools
     SHOW_GRADE_AVERAGE("show_grade_average"),
-    FIRST_LAUNCH("first_launch")
+    FIRST_LAUNCH("first_launch"),
+    IS_NOTIFICATION_CHANNEL_CREATED("is_notification_channel_created"),
+
+    // Longs
+    EXAM_NOTIFICATION_TIME("exam_notification_time")
 }

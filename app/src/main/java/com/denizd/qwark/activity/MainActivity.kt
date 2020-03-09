@@ -1,27 +1,22 @@
 package com.denizd.qwark.activity
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.View
-import android.view.ViewAnimationUtils
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.*
 import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.database.QwarkRepository
 import com.denizd.qwark.databinding.ActivityMainBinding
 import com.denizd.qwark.fragment.*
 import com.denizd.qwark.util.Dependencies
-import com.denizd.qwark.util.QwarkPreferences
+import com.denizd.qwark.util.ExamNotificationWorker
 import com.denizd.qwark.viewmodel.MainViewModel
-import kotlin.math.hypot
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 class MainActivity : FragmentActivity() {
@@ -68,25 +63,44 @@ class MainActivity : FragmentActivity() {
         // TODO reselected listener for scrolling up
 
         resources.getStringArray(R.array.greetings).also { array ->
-            binding.greetingTextView.text = String.format(array[Random.nextInt(array.size)], "TODO")
+            binding.greetingTextView.text = String.format(
+                    array[Random.nextInt(array.size)],
+                    Dependencies.repo.prefs.getScoreProfileName()
+            )
         }
-        Handler().postDelayed({
-            binding.splashScreen.apply {
-                val cx = width / 2
-                val cy = height / 2
-                val initialRadius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
+        // splash screen
+//        Handler().postDelayed({
+//            binding.splashScreen.apply {
+//                val cx = width / 2
+//                val cy = height / 2
+//                val initialRadius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
+//
+//                ViewAnimationUtils.createCircularReveal(this, cx, cy, initialRadius, 0f).also { anim ->
+//                    anim.addListener(object : AnimatorListenerAdapter() {
+//                        override fun onAnimationEnd(animation: Animator) {
+//                            super.onAnimationEnd(animation)
+//                            visibility = View.GONE
+//                        }
+//                    })
+//                    anim.start()
+//                }
+//            }
+//        }, 1200)
 
-                ViewAnimationUtils.createCircularReveal(this, cx, cy, initialRadius, 0f).also { anim ->
-                    anim.addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            super.onAnimationEnd(animation)
-                            visibility = View.GONE
-                        }
-                    })
-                    anim.start()
+        Dependencies.repo.allCoursesWithExams.observe(this, Observer { courses ->
+            with (WorkManager.getInstance(this)) {
+                for (course in courses) {
+                    beginUniqueWork(
+                        "${course.name}-${course.courseId}",
+                        ExistingWorkPolicy.REPLACE,
+                        OneTimeWorkRequestBuilder<ExamNotificationWorker>()
+                            .setInitialDelay(getTimeUntil(course.examTime), TimeUnit.MILLISECONDS)
+                            .setInputData(Data.Builder().putString("course", course.name).build())
+                            .build()
+                    ).enqueue()
                 }
             }
-        }, 1200)
+        })
     }
 
     override fun onResume() {
@@ -105,9 +119,9 @@ class MainActivity : FragmentActivity() {
         }
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment, type)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+                .replace(R.id.fragment_container, fragment, type)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
 
 //        with (supportFragmentManager) {
 //            beginTransaction()
@@ -139,4 +153,7 @@ class MainActivity : FragmentActivity() {
             }
         }
     }
+
+    // TODO add option to set time of notification (currently: 7 AM)
+    private fun getTimeUntil(examTime: Long): Long = examTime + viewModel.getExamNotificationTime() - System.currentTimeMillis()
 }

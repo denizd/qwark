@@ -1,8 +1,10 @@
 package com.denizd.qwark.fragment
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TimePicker
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.denizd.lawrence.util.viewBinding
@@ -13,10 +15,12 @@ import com.denizd.qwark.sheet.ScoreProfileCreateSheet
 import com.denizd.qwark.sheet.YearCreateSheet
 import com.denizd.qwark.databinding.SettingsFragmentBinding
 import com.denizd.qwark.model.SchoolYear
+import com.denizd.qwark.util.toHourAndSecond
+import com.denizd.qwark.util.toMillis
 import com.denizd.qwark.viewmodel.SettingsViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class SettingsFragment : QwarkFragment(R.layout.settings_fragment) {
+class SettingsFragment : QwarkFragment(R.layout.settings_fragment), TimePickerDialog.OnTimeSetListener {
 
     private val binding: SettingsFragmentBinding by viewBinding(SettingsFragmentBinding::bind)
     private val viewModel: SettingsViewModel by viewModels()
@@ -166,7 +170,7 @@ class SettingsFragment : QwarkFragment(R.layout.settings_fragment) {
         viewModel.allScoreProfiles.observe(viewLifecycleOwner, Observer { scoreProfiles ->
             binding.scoreProfileDropdown.apply {
                 setAdapter(
-                    ArrayAdapter<String>(
+                    ArrayAdapter(
                         context,
                         R.layout.dropdown_item,
                         scoreProfiles.map { s -> s.name }
@@ -203,6 +207,24 @@ class SettingsFragment : QwarkFragment(R.layout.settings_fragment) {
                 openBottomSheet(deleteScoreProfileSheet)
             }
         }
+        setExamNotificationTimeText()
+        binding.setExamNotificationTimeButton.setOnClickListener {
+            val time = viewModel.getExamNotificationTime().toHourAndSecond()
+            TimePickerDialog(context, this, time.first, time.second, true).show()
+        }
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        viewModel.setExamNotificationTime(Pair(hourOfDay, minute).toMillis())
+        setExamNotificationTimeText()
+    }
+
+    private fun setExamNotificationTimeText() {
+        val time = viewModel.getExamNotificationTime().toHourAndSecond()
+        val examNotificationTime = with (time) {
+            "${first.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}"
+        }
+        binding.examNotificationTimeTextView.text = getString(R.string.exam_notification_time_placeholder, examNotificationTime)
     }
 
     fun copyCourses(yearId: Int) {

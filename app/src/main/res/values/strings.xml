@@ -18,6 +18,9 @@
     <string name="to_be_implemented">To be implemented</string>
     <string name="powered_by_qwark" translatable="false">Powered by Qwark</string>
     <string name="made_by_deniz" translatable="false">Made by Deniz</string>
+    <string name="exams">Exams</string>
+    <string name="exam_reminder">Exam reminder: %s</string>
+    <string name="writing_an_exam_today">You\'re writing an exam in %s today!</string>
 
     <string-array name="greetings">
         <item>Hello %s!</item>
@@ -211,6 +214,8 @@
     <!-- SettingsFragment.kt -->
     <string name="settings">Settings</string>
 
+    <string name="set_exam_notification_time">Set exam notification time</string>
+    <string name="exam_notification_time_placeholder">Currently set to %s</string>
     <string name="course_sort_type">Sort courses by</string>
     <string-array name="course_sort_type_options">
         <item>Time added (ascending)</item>

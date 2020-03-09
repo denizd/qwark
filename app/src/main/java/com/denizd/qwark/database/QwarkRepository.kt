@@ -83,7 +83,6 @@ class QwarkRepository(app: Application) {
         prefs.setInt(PreferenceKey.SCORE_PROFILE_ID, scoreProfile.scoreProfileId)
             .setString(PreferenceKey.SCORE_PROFILE_NAME, scoreProfile.name)
     }
-
     fun setCurrentSchoolYear(schoolYear: SchoolYear) {
         prefs.setInt(PreferenceKey.SCHOOL_YEAR_ID, schoolYear.yearId)
             .setString(PreferenceKey.SCHOOL_YEAR_NAME, schoolYear.year)
@@ -122,7 +121,6 @@ class QwarkRepository(app: Application) {
         dao.update(SchoolYear(name, prefs.getCurrentSchoolYearId()))
         setCurrentSchoolYear(SchoolYear(name, prefs.getCurrentSchoolYearId()))
     }
-
     fun updateScoreProfile(name: String) {
         dao.update(ScoreProfile(name, prefs.getScoreProfileId()))
         setCurrentScoreProfile(ScoreProfile(name, prefs.getScoreProfileId()))
@@ -137,7 +135,6 @@ class QwarkRepository(app: Application) {
         dao.deleteSchoolYear(prefs.getCurrentSchoolYearId())
         setCurrentSchoolYear(SchoolYear("", 0))
     }
-
     fun deleteScoreProfile() {
         dao.deleteScoreProfile(prefs.getScoreProfileId())
         setCurrentScoreProfile(ScoreProfile("", 0))
@@ -148,6 +145,7 @@ class QwarkRepository(app: Application) {
     val allCoursesForToday: LiveData<List<Course>> = dao.getCoursesByDayType(getDayType(), prefs.getSchoolYear())
     val allYears: LiveData<List<SchoolYear>> = dao.allYears
     val allScoreProfiles: LiveData<List<ScoreProfile>> = dao.allScoreProfiles
+    val allCoursesWithExams: LiveData<List<CourseExam>> = dao.getAllCoursesWithExams()
 
     // get
     fun getCourse(courseId: Int): CourseExam = dao.getCourse(courseId)
@@ -166,7 +164,7 @@ class QwarkRepository(app: Application) {
             (participations.map { it.timesSpoken }.sum())
         )
     }
-    fun getDayType(): String = if (dayId in 1..5) days[dayId - 1] else days[1]
+    private fun getDayType(): String = if (dayId in 1..5) days[dayId - 1] else days[1]
     private fun getMaxFinalScoreId(increment: Boolean): Int {
         if (increment) {
             prefs.setInt(PreferenceKey.MAX_SCORE_PROFILE_ID, getMaxFinalScoreId(false) + 1)

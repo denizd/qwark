@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.denizd.qwark.database.QwarkClient
 import com.denizd.qwark.model.ScoreProfile
 import com.denizd.qwark.model.SchoolYear
+import com.denizd.qwark.util.PreferenceKey
 
 class SettingsViewModel(private val app: Application) : QwarkViewModel(app) {
 
@@ -21,6 +22,7 @@ class SettingsViewModel(private val app: Application) : QwarkViewModel(app) {
     fun getCurrentSchoolYearId(): Int = repo.prefs.getCurrentSchoolYearId()
     fun getParticipationDisplay(): Int = repo.prefs.getParticipationDisplay()
     fun getParticipationDay(): Int = repo.prefs.getParticipationDay()
+    fun getExamNotificationTime(): Long = repo.prefs.getExamNotificationTime()
 
     // Preference setters
     fun setAppTheme(value: Int) { repo.prefs.setAppTheme(value) }
@@ -31,6 +33,7 @@ class SettingsViewModel(private val app: Application) : QwarkViewModel(app) {
     fun updateSchoolYear(schoolYear: SchoolYear) { repo.setCurrentSchoolYear(schoolYear) }
     fun setParticipationDisplay(value: Int) { repo.prefs.setParticipationDisplay(value) }
     fun setParticipationDay(value: Int) { repo.prefs.setParticipationDay(value) }
+    fun setExamNotificationTime(value: Long) = repo.prefs.setExamNotificationTime(value)
 
     // Database functions
     fun insert(schoolYear: SchoolYear) = doAsync { repo.insert(schoolYear) }
