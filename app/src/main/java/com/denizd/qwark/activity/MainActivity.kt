@@ -1,22 +1,26 @@
 package com.denizd.qwark.activity
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.*
 import com.denizd.lawrence.util.viewBinding
 import com.denizd.qwark.R
 import com.denizd.qwark.database.QwarkRepository
 import com.denizd.qwark.databinding.ActivityMainBinding
 import com.denizd.qwark.fragment.*
 import com.denizd.qwark.util.Dependencies
-import com.denizd.qwark.util.ExamNotificationWorker
+import com.denizd.qwark.util.ExamService
+import com.denizd.qwark.util.QwarkUtil
 import com.denizd.qwark.viewmodel.MainViewModel
-import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 class MainActivity : FragmentActivity() {
@@ -88,16 +92,23 @@ class MainActivity : FragmentActivity() {
 //        }, 1200)
 
         Dependencies.repo.allCoursesWithExams.observe(this, Observer { courses ->
-            with (WorkManager.getInstance(this)) {
+            with (getSystemService(Context.ALARM_SERVICE) as AlarmManager) {
                 for (course in courses) {
-                    beginUniqueWork(
-                        "${course.name}-${course.courseId}",
-                        ExistingWorkPolicy.REPLACE,
-                        OneTimeWorkRequestBuilder<ExamNotificationWorker>()
-                            .setInitialDelay(getTimeUntil(course.examTime), TimeUnit.MILLISECONDS)
-                            .setInputData(Data.Builder().putString("course", course.name).build())
-                            .build()
-                    ).enqueue()
+//                    val t = getTimeUntil(course.examTime)
+                    if (course.examTime > QwarkUtil.timeAtMidnight || !(QwarkUtil.timeAtMidnight + viewModel.getExamNotificationTime()).hasPassed()) {
+                        set(
+                            AlarmManager.RTC,
+                            course.examTime + viewModel.getExamNotificationTime(),
+                            PendingIntent.getService(
+                                this@MainActivity,
+                                course.courseId,
+                                Intent(this@MainActivity, ExamService::class.java).also { intent ->
+                                    intent.putExtra("course", course.name)
+                                },
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                            )
+                        )
+                    }
                 }
             }
         })
@@ -154,6 +165,6 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    // TODO add option to set time of notification (currently: 7 AM)
     private fun getTimeUntil(examTime: Long): Long = examTime + viewModel.getExamNotificationTime() - System.currentTimeMillis()
+    private fun Long.hasPassed(): Boolean = this < System.currentTimeMillis()
 }

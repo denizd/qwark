@@ -20,8 +20,8 @@ interface QwarkDao {
     @Query("SELECT course.*, (SELECT MIN(exam_time) FROM grade WHERE grade.course_id = course.course_id AND exam_time >= :time) AS exam_time FROM course GROUP BY course.course_id ORDER BY time")
     fun getAllCourseExams(time: Long = QwarkUtil.timeAtMidnight): List<CourseExam>
 
-    @Query("SELECT course.*, (SELECT MIN(exam_time) FROM grade WHERE grade.course_id = course.course_id AND exam_time >= :time) AS exam_time FROM course WHERE exam_time > :time GROUP BY course.course_id ORDER BY time")
-    fun getAllCoursesWithExams(time: Long = QwarkUtil.timeAtMidnight + 25200000L): LiveData<List<CourseExam>>
+    @Query("SELECT course.*, (SELECT MIN(exam_time) FROM grade WHERE grade.course_id = course.course_id AND exam_time >= :timeAtMidnight) AS exam_time FROM course WHERE exam_time > -1 GROUP BY course.course_id ORDER BY time")
+    fun getAllCoursesWithExams(timeAtMidnight: Long = QwarkUtil.timeAtMidnight): LiveData<List<CourseExam>>
 
     @Query("SELECT *, -1 AS exam_time FROM course WHERE course_id != :u ORDER BY time")
     fun getAllCourses(u: Int = -1): List<CourseExam> // the u variable is an unnecessary workaround to return a list instead of LiveData

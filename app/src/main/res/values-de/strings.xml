@@ -19,6 +19,7 @@
     <string name="exams">Klausuren</string>
     <string name="exam_reminder">Klausurerinnerung: %s</string>
     <string name="writing_an_exam_today">Heute schreibst du eine Klausur in %s!</string>
+    <string name="exam_service_description">Verschickt Benachrichtigungen für anstehende Klausuren</string>
 
     <!-- CourseFragment.kt -->
     <string name="course">Kurs</string>

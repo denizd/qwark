@@ -21,6 +21,7 @@
     <string name="exams">Exams</string>
     <string name="exam_reminder">Exam reminder: %s</string>
     <string name="writing_an_exam_today">You\'re writing an exam in %s today!</string>
+    <string name="exam_service_description">Sends notifications for upcoming exams</string>
 
     <string-array name="greetings">
         <item>Hello %s!</item>
